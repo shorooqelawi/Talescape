@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talescape</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+<body>
+    <!-- Banner Section -->
+    <section class="banner" id="banner-section">
+        <header>
+            <div class="logo"><a href="#"><i class="fas fa-book"></i>  Talescape</a></div>
+            <nav>
+                <a href="index.html" id="nav-home">Home</a>
+                <a href="books.html" id="nav-books">Books</a>
+                <a href="Library.html" id="nav-library">Libraries</a>
+                <a href="aboutus.html" id="nav-about">About Us</a>
+            </nav>
+            <div class="header-icons">
+                <a href="search.html" id="search-icon" class="header-icon" title="Search">
+                    <i class="fas fa-search"></i>
+                </a>
+                <a href="#" id="account-icon" title="Account">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </header>
+
+        <div class="banner-content">
+            <h1 id="banner-title">Discover a world of books waiting just around the corner.</h1>
+            <p id="banner-description">Books are a window to the world, inviting us to explore, learn, and grow.</p>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search for books...">
+                <button type="submit" id="search-button">Search</button>
+            </div>
+        </div>
+    </section>
+
+<!-- Modal for Login and Signup -->
+<div id="login-modal" class="modal">
+    <div class="modalL-content">
+        <span id="close-modal" class="closeL">&times;</span>
+        <h2 id="modall-title">Welcome to Talescape</h2>
+        <div class="tab-container">
+            <button class="tab-button active" onclick="openTab('login')">Login</button>
+            <button class="tab-button" onclick="openTab('signup')">Signup</button>
+        </div>
+        <div id="login" class="tab-content">
+            <div class="modalL-btn-container">
+                <a href="loginR.html" id="reader-login-link">
+                    <button class="modalL-btn">Login as Reader</button>
+                </a>
+                <a href="loginL.html" id="library-login-link">
+                    <button class="modalL-btn">Login as Library</button>
+                </a>
+                <a href="login-admin.html" id="library-login-link">
+                    <button class="modalL-btn">Login as Admin</button>
+                </a>
+                
+            </div>
+        </div>
+        <div id="signup" class="tab-content" style="display:none;">
+            <div class="modalL-btn-container">
+                <a href="signupR.html" id="reader-signup-link">
+                    <button class="modalL-btn">Signup as Reader</button>
+                </a>
+                <a href="signupL.html" id="library-signup-link">
+                    <button class="modalL-btn">Signup as Library</button>
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <script>
+
+  </script>
+
+    <!-- Account List -->
+    <div id="account-list" class="account-list" style="display:none;">
+        <ul>
+            <li><strong>Email:</strong> <span id="account-email">Not logged in</span></li>
+            <li><a href="#" id="logout-link" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Quote Section -->
+    <section class="Quote">
+        <h1 id="Quote">Quotes</h1>
+        <div class="quote-container">
+            <p id="quote">"A room without books is like a body without a soul."</p>
+            <button id="random-quote-btn">Today's Quote</button>
+        </div>
+        <script>
+            const quotes = [
+                "\"Books are whispers of worlds waiting to be heard.\"",
+                "\"Books are a uniquely portable magic.\"",
+                "\"Reading gives us someplace to go when we have to stay where we are.\"",
+                "\"I have always imagined that Paradise will be a kind of library.\"",
+                "\"Books are the mirrors of the soul.\"",
+                "\"Once you learn to read, you will be forever free.\"",
+                "\"Every page turned is a step into the infinite.\"",
+                "\"Words are the lanterns that guide us through the dark.\"",
+                "\"Reading is the art of traveling without moving.\"",
+                "\"Between the lines, secrets of the universe unfold.\"",
+                "\"A book is a doorway; dare to step through.\"",
+                "\"Ink and paper weave the fabric of dreams.\"",
+                "\"To read is to gather light from shadows.\"",
+                "\"Books do not speak ~ they sing to the soul.\"",
+                "\"Each book is a treasure chest; the key lies in your hands.\"",
+                "\"Reading turns silence into symphonies.\"",
+                "\"Every story is a map to wonder.\"",
+                "\"A library is a garden where minds bloom.\"",
+                "\"Through books, we live a thousand lives.\"",
+                "\"Pages hold echoes of distant souls.\"",
+                "\"Words build bridges to the unknown.\""
+            ];
+
+            let lastQuoteIndex = -1;
+
+            document.getElementById('random-quote-btn').addEventListener('click', function() {
+                const quoteElement = document.getElementById('quote');
+                quoteElement.classList.add('hidden');
+
+                setTimeout(function() {
+                    let randomQuoteIndex;
+                    do {
+                        randomQuoteIndex = Math.floor(Math.random() * quotes.length);
+                    } while (randomQuoteIndex === lastQuoteIndex);
+
+                    lastQuoteIndex = randomQuoteIndex;
+                    const randomQuote = quotes[randomQuoteIndex];
+                    quoteElement.textContent = randomQuote;
+                    quoteElement.classList.remove('hidden');
+                }, 500);
+            });
+        </script>
+    </section>
+
+   <!-- Categories Section -->
+   <section class="categories">
+    <h2 id="categories-title">Book Categories</h2>
+    <div class="category-list">
+
+        <div class="category">
+            <a href="literature.html">
+                <div class="category-btn">
+                    <i class="fas fa-feather"></i>
+                    <span>Literature</span>
+                </div>
+            </a>
+        </div>
+        
+        <div class="category">
+            <a href="english.html">
+                <div class="category-btn">
+                    <i class="fas fa-font"></i>
+                    <span>English</span>
+                </div>
+            </a>
+        </div>
+        <div class="category">
+            <a href="science.html">
+                <div class="category-btn">
+                    <i class="fas fa-flask"></i>
+                    <span>Science</span>
+                </div>
+            </a>
+        </div>
+        <div class="category">
+            <a href="history.html">
+                <div class="category-btn">
+                    <i class="fas fa-torii-gate"></i>
+                    <span>History</span>
+                </div>
+            </a>
+        </div>
+        <div class="category">
+            <a href="religion.html">
+                <div class="category-btn">
+                    <i class="fas fa-mosque"></i>
+                    <span>Religion</span>
+                </div>
+            </a>
+        </div>
+        <div class="category">
+            <a href="tecnology.html">
+                <div class="category-btn">
+                    <i class="fas fa-laptop-code"></i>
+                    <span>Technology</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Talescape. All rights reserved.</p>
+
+        </div>
+    </footer>
+
+    <script>
+              // Handle search button click
+              document.getElementById('search-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            const searchTerm = document.getElementById('search-input').value.trim();
+            if (searchTerm) {
+                window.location.href = `search.html?term=${encodeURIComponent(searchTerm)}`;
+            } else {
+                alert('Please enter a search term.');
+            }
+        });
+        
+        function openTab(tabName) {
+    var i, tabContent, tabButtons;
+    tabContent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabContent.length; i++) {
+        tabContent[i].style.display = "none";
+    }
+    tabButtons = document.getElementsByClassName("tab-button");
+    for (i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].className = tabButtons[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    event.currentTarget.className += " active";
+  }
+// تحديد العناصر التي نحتاج إلى التعامل معها
+const accountIcon = document.getElementById('account-icon');
+const accountList = document.getElementById('account-list');  // القائمة التي تحتوي على معلومات الحساب
+const modal = document.getElementById('login-modal');
+const closeModal = document.getElementById('close-modal');
+
+// عناصر أخرى في المودال
+const readerLoginLink = document.getElementById('reader-login-link');
+const libraryLoginLink = document.getElementById('library-login-link');
+const favoriteLink = document.getElementById('favorite-link');
+const logoutLink = document.getElementById('logout-link');
+
+// دالة للتحقق من حالة تسجيل الدخول
+function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('loggedIn');
+    return isLoggedIn === 'true';
+}
+
+// إغلاق المودال عند الضغط على زر الإغلاق
+closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+// فتح المودال عند الضغط على أيقونة الحساب إذا لم يكن المستخدم قد سجل الدخول
+accountIcon.addEventListener('click', (event) => {
+    event.preventDefault(); // منع الانتقال الافتراضي
+    if (checkLoginStatus()) {
+        // إذا كان المستخدم قد سجل الدخول، إظهار قائمة الحساب
+        accountList.style.display = accountList.style.display === 'block' ? 'none' : 'block';
+    } else {
+        // إذا لم يكن المستخدم قد سجل دخوله، إظهار المودال لتسجيل الدخول
+        modal.style.display = 'block';
+    }
+});
+
+// تحديث حالة عرض محتوى الحساب عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+    const isLoggedIn = localStorage.getItem('loggedIn');
+    if (isLoggedIn === 'true') {
+        // إذا كان المستخدم قد سجل الدخول، تحديث البيانات
+        
+        const userEmail = localStorage.getItem('userEmail');
+        
+        document.getElementById('account-email').textContent = userEmail;  // تحديث البريد الإلكتروني
+
+        // إظهار أيقونة تسجيل الخروج وإخفاء المودال
+        
+        document.getElementById('account-email').style.display = 'block';
+        document.getElementById('logout-link').style.display = 'block';
+    } else {
+        // إذا لم يكن مسجلًا، إخفاء أو تعديل المحتوى الخاص بالمستخدم
+       
+        document.getElementById('account-email').textContent = 'Not logged in';
+
+        // إخفاء روابط تسجيل الخروج في حال عدم تسجيل الدخول
+        document.getElementById('account-email').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'none';
+    }
+});
+
+
+
+// إضافة تأكيد قبل تسجيل الخروج
+logoutLink.addEventListener('click', () => {
+    if (confirm('Are you sure you want to log out?')) {
+        localStorage.setItem('loggedIn', 'false');  // تحديث حالة تسجيل الدخول
+        localStorage.removeItem('userEmail');  // إزالة بيانات المستخدم
+        accountList.style.display = 'none';  // إخفاء قائمة الحساب بعد تسجيل الخروج
+        alert("You have been logged out.");
+        window.location.href = 'index.html';  // إعادة توجيه المستخدم للصفحة الرئيسية بعد الخروج
+    }
+});
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+/* General Styles */
+body {
+    font-family: 'Rubik', sans-serif;
+    background: url('imge/booknew.jpg') no-repeat center center/cover; /* إضافة خلفية الصورة */
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for Content */
+section {
+    background-color: rgba(0, 0, 0, 0.7); /* خلفية سوداء شفافة */
+    padding: 30px;
+    border-radius: 15px;
+    width: 80%; /* تقليل العرض */
+    max-width: 800px; /* تقليل العرض الأقصى */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    color: #fff; /* تغيير لون النص إلى الأبيض */
+}
+
+h1 {
+    text-align: center;
+    color: #6c4f80;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Book Details */
+.details {
+    text-align: center;
+}
+
+.details img {
+    max-width: 200px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.details h2 {
+    font-size: 2rem;
+    color: #fff; /* تغيير لون النص إلى الأبيض */
+    margin-bottom: 10px;
+}
+
+.details p {
+    font-size: 1.1rem;
+    color: #ddd; /* تغيير لون النص إلى الأبيض الفاتح */
+    margin: 10px 0;
+}
+
+.details h3 {
+    font-size: 1.5rem;
+    color: #fff; /* تغيير لون النص إلى الأبيض */
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+a {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal for Reservation */
+.modal {
+    display: none; /* مخفي بشكل افتراضي */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* خلفية شبه شفافة */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+/* Form inside Modal */
+#reservation-form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+#reservation-form select,
+#reservation-form textarea {
+    width: 96%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid #6c4f80;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#reservation-form select:focus,
+#reservation-form textarea:focus {
+    border-color: #9a84ad;
+    box-shadow: 0 0 12px rgba(108, 79, 128, 0.1);
+    outline: none;
+}
+
+#reservation-form textarea {
+    height: 150px; /* زيادة ارتفاع حقل الملاحظات */
+    
+}
+
+#reservation-form button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#reservation-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .details img {
+        max-width: 150px;
+    }
+
+    .details h2 {
+        font-size: 1.8rem;
+    }
+
+    .details p {
+        font-size: 1rem;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+}
+a {
+    text-decoration: none; /* إزالة الخط من الرابط */
+}
+

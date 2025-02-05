@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up as a Reader</title>
+    <link rel="stylesheet" href="signupR.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <section class="banner" id="banner-section">
+        <header>
+            <div class="logo"><a href="index.html"><i class="fas fa-book"></i> Talescape</a></div>
+            <nav>
+                <a href="index.html" id="nav-home">Home</a>
+                <a href="books.html" id="nav-books"> Books</a>
+                <a href="Library.html" id="nav-library">Libraries</a>
+                <a href="aboutus.html" id="nav-about">About Us</a>
+            </nav>
+        </header>
+
+        <!-- Sign Up Section -->
+        <div class="login-container">
+            <div class="login-box">
+                <h2 id="login-title">Sign Up as a Reader</h2>
+                <form id="signup-form">
+                    <!-- Row 1: Username and Email -->
+                    <div class="input-group-row">
+                        <div class="input-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <!-- Row 2: Phone Number and City -->
+                    <div class="input-group-row">
+                        <div class="input-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required pattern="07\d{8}" placeholder="e.g. 07XXXXXXXX">
+                        </div>
+
+
+                        <div class="input-group">
+                            <label for="city">City</label>
+                            <select id="city" name="city" required>
+                                <option value="">Select a city</option>
+                                <option value="Amman">Amman</option>
+                                <option value="Irbid">Irbid</option>
+                                <option value="Zarqa">Zarqa</option>
+                                <option value="Aqaba">Aqaba</option>
+                                <option value="Mafraq">Mafraq</option>
+                                <option value="Karak">Karak</option>
+                                <option value="Ma'an">Ma'an</option>
+                                <option value="Jarash">Jarash</option>
+                                <option value="Ajloun">Ajloun</option>
+                                <option value="Balqa">Balqa</option>
+                                <option value="Madaba">Madaba</option>
+                                <option value="Tafilah">Tafilah</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Row 3: Password and Confirm Password -->
+                    <div class="input-group-row">
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" name="confirm-password" required>
+                        </div>
+                    </div>
+                    <!-- Hidden fields for latitude and longitude -->
+                    <input type="hidden" id="latitude" name="latitude">
+                    <input type="hidden" id="longitude" name="longitude">
+                    <button type="submit" id="signup-btn">Sign Up</button>
+                    <p class="account-exists">Already have an account? <a href="loginR.html">Login</a></p>
+                    <p class="join-library">Want to join as a library? <a href="signupL.html">Register as Library</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // جلب موقع القارئ تلقائيًا
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        console.log("Reader's location:", latitude, longitude);
+
+                        // تعبئة حقول خطوط الطول والعرض
+                        document.getElementById('latitude').value = latitude;
+                        document.getElementById('longitude').value = longitude;
+                    },
+                    (error) => {
+                        console.error('Error fetching location:', error);
+                        alert('Unable to retrieve your location. Please ensure location services are enabled.');
+                    }
+                );
+            } else {
+                alert('The browser does not support location services.');
+            }
+        });
+
+        document.getElementById('signup-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // جمع البيانات من الفورم
+            const formData = new FormData(this);
+            const data = {
+                username: formData.get('username'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                confirmPassword: formData.get('confirm-password'),
+                city: formData.get('city'),
+                phone_number: formData.get('phone'),
+                latitude: formData.get('latitude') || 0, // إذا لم يتم تحديد الموقع، استخدم 0
+                longitude: formData.get('longitude') || 0 // إذا لم يتم تحديد الموقع، استخدم 0
+            };
+
+            // إرسال البيانات إلى الخادم
+            fetch('http://localhost:3000/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.text(); // استجابة نصية بدلاً من JSON
+            })
+            .then(message => {
+                alert(message);  // عرض رسالة النجاح
+                window.location.href = 'loginR.html';  // تحويل المستخدم إلى صفحة تسجيل الدخول
+            })
+            .catch(error => {
+                console.error('An error occurred during registration:', error);
+                alert('An error occurred during registration: ' + error.message);  // Display the error message
+            });
+        });
+    </script>
+</body>
+</html>

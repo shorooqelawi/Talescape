@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="aboutus.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    
+</head>
+<body>
+
+    <!-- Banner Section -->
+    <section class="banner" id="banner-section">
+        <header>
+            <div class="logo"><a href="libraryhome.html"><i class="fas fa-book"></i>  Talescape</a></div>
+            
+            <nav>
+                <a href="libraryhome.html">Home</a>
+                <a href="MyLibrary.html">My Library</a>
+                <a href="bookL.html">Recently Added Books</a>
+                <a href="reserved_books.html">Reserved Books</a>
+                <a href="aboutusL.html">About Us</a>
+            </nav>
+            
+            <div class="header-icons">
+
+                 <a href="#" id="account-icon" title="Account">
+                    <i class="fas fa-user"></i>
+                </a>
+
+                
+            </div>
+        </header>
+
+
+        <div class="banner-content">
+            <h1 id="banner-title">Welcome to Talescape<br></h1>
+            <h2>Where Every Story Finds Its Way to You!</h2>
+            <p id="banner-description">We turn your search for the perfect book into an effortless journey. Whether you’re 
+                chasing a timeless classic, we’re here to guide you to the nearest bookstore or online shop.
+            </p>
+            <p>
+                Born from a love for stories and a passion for connecting readers with books, Talescape is more than just a search tool
+                it’s your gateway to endless literary adventures. Start exploring today, and let us help you uncover your next great read!
+            </p>
+            <p>
+                At Talescape, not only can you discover the book you're searching for, but you can also reserve it with ease. Once you've made your reservation, 
+                the bookstore will reach out to you via your registered phone number or email, 
+                making your journey into the world of books smoother and more convenient.
+            </p>
+            <a href="libraryhome.html" class="btn">Escape to your Tale</a>
+        </div>
+    </section>
+
+
+    <!-- Account List (القائمة التي ستظهر عند الضغط على أيقونة الحساب) -->
+    <div id="account-list" class="account-list" style="display:none;">
+        <ul>
+            <li><strong>Email:</strong> <span id="account-email">Not logged in</span></li>
+            <li><a href="#" id="logout-link" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+
+<script>
+    // تحقق من حالة تسجيل الدخول عبر localStorage
+    const userEmail = localStorage.getItem('userEmail');  // جلب البريد الإلكتروني من localStorage
+        let isLoggedIn = false;
+
+        // دالة لعرض أو إخفاء قائمة الحساب
+        function toggleAccountList() {
+            const accountList = document.getElementById('account-list');
+            if (accountList.style.display === 'none') {
+                accountList.style.display = 'block';
+                if (isLoggedIn) {
+                    document.getElementById('account-email').textContent = userEmail;
+                } else {
+                    document.getElementById('account-email').textContent = 'Not logged in';
+                }
+            } else {
+                accountList.style.display = 'none';
+            }
+        }
+
+        // دالة لتسجيل الخروج مع رسالة تأكيد
+        function logout() {
+            if (confirm("Are you sure you want to log out?")) {
+                // مسح البريد الإلكتروني من localStorage
+                localStorage.removeItem('userEmail');
+                window.location.href = "index.html";  // إعادة التوجيه إلى صفحة index.html بعد تسجيل الخروج
+            }
+        }
+
+        // إضافة حدث للنقر على أيقونة الحساب
+        document.getElementById('account-icon').addEventListener('click', toggleAccountList);
+
+        // إضافة حدث للنقر على رابط "تسجيل الخروج"
+        document.getElementById('logout-link').addEventListener('click', logout);
+
+        // تحقق مما إذا كان المستخدم قد سجل الدخول أم لا
+        if (userEmail) {
+            isLoggedIn = true;
+        } else {
+            isLoggedIn = false;
+        }
+
+
+</script>
+
+</body>
+ </html>
+  

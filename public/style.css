@@ -1,0 +1,713 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap');
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Banner Section */
+body {
+    font-family: 'Rubik', sans-serif;
+}
+
+.banner {
+    background: url('../public/imge/banner3.jpg') no-repeat center center/cover;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* إضافة ظل لجميع الأقسام */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background:rgba(80, 80, 80, 0.7); /* خلفية سوداء شفافة */
+    z-index: 10;
+}
+
+header .logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.3s;
+}
+
+header .logo a:hover {
+    color: #cb742c;
+    transform: scale(1.1);
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+header nav a:hover {
+    color: #cb742c;
+}
+
+.banner-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+    background: rgba(0, 0, 0, 0.6);; /* خلفية شفافة */
+    border-radius: 8px;
+}
+
+.banner-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.banner-content p {
+    margin: 1rem 0;
+    font-size: 1rem;
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+}
+
+.header-icons a {
+    color: #fff;
+    margin: 0 0.5rem;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.header-icons a:hover {
+    color:  #cb742c;
+}
+
+body {
+    font-family: 'Rubik', sans-serif;
+    direction: ltr; /* الإعداد الافتراضي */
+}
+
+.rtl {
+    direction: rtl; /* اتجاه النص للغة العربية */
+}
+
+#language-toggle {
+    text-decoration: none; /* إزالة الخط تحت النص */
+    font-size: 1rem;
+}
+
+/* تحديد جميع الأقسام التي تأتي بعد الـ banner وتغيير خلفيتها */
+section:not(#banner-section) {
+    background-color: #806891; /* أو اللون الذي ترغب فيه */
+    background-size: cover; /* لتغطية الخلفية بالكامل */
+    background-position: center; /* لتحديد مكان الصورة داخل القسم */
+    padding: 2rem; /* لضبط الحشو داخل الأقسام */
+}
+
+
+/* إضافة تنسيق للأيقونة في الشريط العلوي */
+.header-icons a#search-icon {
+      /* ستكون مخفية في البداية */
+    font-size: 1.5rem;
+    color: #fff;
+    margin-left: 1rem;
+    transition: color 0.3s;
+}
+
+/* تغيير اللون عند التمرير */
+.header-icons a#search-icon:hover {
+    color: #cb742c;
+}
+
+/* شريط البحث العائم عندما يظهر عند التمرير */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(0, 0, 0, 0.6);; /* خلفية سوداء شفافة */
+    z-index: 10;
+}
+
+body {
+    font-family: 'Rubik', sans-serif;
+}
+
+
+/* تنسيق الأيقونات */
+.icon-link {
+    font-size: 22px;            /* حجم الأيقونة */
+    color: #333;                /* اللون الافتراضي للأيقونة */
+    text-decoration: none;      /* إزالة التسطير من الروابط */
+    transition: color 0.3s ease;/* تأثير التغيير عند التمرير */
+    display: flex;              /* استخدام flex داخل الرابط لضمان محاذاة العناصر داخله */
+    align-items: center;        /* محاذاة الأيقونة داخل الرابط بشكل عمودي */
+}
+
+.icon-link i {
+    font-size: 22px;            /* حجم الأيقونة الثابت */
+    display: inline-block;
+}
+
+/* تغيير اللون عند التمرير فوق الأيقونة */
+.icon-link:hover {
+    color: #007bff;             /* تغيير اللون عند التمرير */
+}
+
+.book.hidden {
+    display: none;
+}
+
+/* Footer Section */
+.footer {
+    background-color:rgba(0, 0, 0, 0.6);;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.footer-nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+    color: #cb742c;
+}
+section:not(#banner-section) {
+    margin-top: 2rem; /* المسافة بين الأقسام */
+    padding: 2rem; /* لضبط الحشو داخل الأقسام */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* إضافة ظل لجميع الأقسام */
+    border-radius: 15px; /* إضافة حواف دائرية */
+}
+
+footer.footer {
+    margin-top: 2rem; /* إضافة مسافة بين هذا القسم وأي قسم قبله */
+}
+
+/* Footer Styles */
+footer.footer {
+    background-color: rgba(80, 80, 80, 0.7);
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.footer-nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+    color: #cb742c;
+}
+* تحسين تصميم خانة البحث في الـ Banner */
+.search-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.7); /* خلفية شفافة */
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    max-width: 500px;
+    width: 100%;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.search-box input {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    width: 80%; /* التحكم في عرض حقل البحث */
+    margin-right: 10px;
+}
+
+.search-box button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    background-color: #6c4f80;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.search-box button:hover {
+    background-color: #9a84ad;
+}
+.search-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.7); /* خلفية شفافة */
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    max-width: 500px; /* أقصى عرض للحاوية */
+    width: 100%; /* يجعل العرض مرنًا */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* تأثير الظل */
+    margin: 0 auto; /* تأكيد أن الحاوية تكون في المنتصف */
+}
+
+#search-button {
+    position: relative; /* يسمح بتحريك الزر دون التأثير على العناصر الأخرى */
+    top: 0; /* تحريك الزر لأعلى أو لأسفل */
+    left: 4px; /* تحريك الزر لليمين أو لليسار */
+    margin-top: 2px;
+    margin-left: 9px; /* أو يمكن استخدام margin بدلًا من left */
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+}
+
+.account-list {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 200px;
+}
+
+.account-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.account-list li {
+    margin: 10px 0;
+}
+
+.account-list a {
+    text-decoration: none;
+    color: #333;
+}
+
+.account-list a:hover {
+    color: #007bff;
+}
+/* تنسيق حساب المستخدم وقائمة تسجيل الخروج */
+.account-list {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 10px; /* إضافة مسافة بين الأيقونة والقائمة */
+}
+
+.account-list ul {
+    list-style: none;
+}
+
+.account-list li {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.account-list a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #6c4f80;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.account-list a:hover {
+    color: #cb742c; /* تغيير اللون عند التمرير */
+    transform: translateX(5px); /* تحريك العنصر قليلاً */
+}
+
+.account-list a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.account-list a:hover i {
+    color: #cb742c; /* تغيير لون الأيقونة عند التمرير */
+}
+
+/* التأثيرات عند المرور على العنصر */
+.account-list a {
+    transition: all 0.3s ease;
+}
+
+.account-list a:hover {
+    transform: translateX(5px); /* التحريك الجانبي عند التمرير */
+}
+
+/* التنسيق لأيقونة الحساب */
+#account-icon {
+    margin-bottom: 5px; /* إضافة مسافة أسفل أيقونة الحساب */
+}
+/* تعديل تنسيق قائمة الحساب */
+.account-list {
+    display: none; /* مخفية في البداية */
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px; /* عرض مناسب للقائمة */
+    font-size: 1rem;
+    position: absolute;
+    top: 50px; /* ضعها تحت الأيقونة مباشرة */
+    right: 10px; /* تحديد المسافة بين القائمة والحافة اليمنى */
+    z-index: 2000; /* تأكد من أن القائمة ستظهر فوق باقي العناصر */
+}
+
+/* إضافة تأثير عند ظهور قائمة الحساب */
+.account-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-list ul li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.account-list ul li:last-child {
+    border-bottom: none;
+}
+
+.account-list a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1rem;
+}
+
+.account-list a:hover {
+    color: #846191;
+}
+/* قائمة الحساب */
+.account-list {
+    position: absolute;
+    top: 50px; /* تحديد الموقع المناسب */
+    right: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 200px; /* عرض مناسب للقائمة */
+    border-radius: 5px;
+    font-family: 'Rubik', sans-serif;
+    display: none; /* تبدأ مخفية */
+}
+
+/* تنسيق البريد الإلكتروني داخل القائمة */
+.account-list span {
+    display: block;
+    word-wrap: break-word; /* يسمح بانكسار النص إلى أسطر جديدة إذا لزم الأمر */
+    white-space: normal; /* يسمح بالنص بأن يلتف بشكل طبيعي داخل المساحة */
+    word-break: break-word; /* يساعد في قطع الكلمات الطويلة بحيث لا تتجاوز الحدود */
+    max-width: 100%; /* تعيين عرض أقصى للنص داخل القائمة */
+}
+/* Categories Section */
+.categories {
+    padding: 2rem;
+    background-color: #f5f5f5;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.categories h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.category {
+    flex: 0 0 30%;
+    margin: 0.5rem;
+}
+
+/* تنسيق الأزرار داخل قسم التصنيفات */
+.category a {
+    display: block; /* ليأخذ الرابط المساحة بالكامل داخل div */
+    width: 100%;
+    height: 100%;
+    text-decoration: none; /* إزالة الخط تحت النص */
+}
+
+/* التأثيرات على div عند التمرير */
+.category-btn {
+    background-color: #fff;
+    color: #333;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s, border-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* يجعل div يأخذ المساحة بالكامل */
+    box-sizing: border-box; /* التأكد من أن الحواف تدخل ضمن الحجم */
+}
+
+/* تأثير التمرير على الأزرار */
+.category-btn:hover {
+    background-color: #cc99ee;
+    color: #fff;
+    transform: translateY(-5px);
+    border-color: #cc99ee;
+}
+
+/* إضافة أيقونات في الأزرار */
+.category-btn i {
+    font-size: 1.3rem;
+    margin-right: 0.6rem;
+}
+
+/* إضافة تأثيرات على الأيقونات عند التمرير */
+.category-btn:hover i {
+    transform: translateX(5px);
+}
+
+/* التأكد من إزالة الخط تحت النص في جميع الحالات */
+.category-btn span {
+    text-decoration: none;
+}
+#quote {
+    font-size: 1.2em;
+    font-style: italic;
+    transition: opacity 0.5s ease;
+}
+
+.hidden {
+    opacity: 0;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 1em;
+    cursor: pointer;
+}
+    /* تنسيق قسم الاقتباسات */
+    .Quote {
+        text-align: center; /* لضمان أن العنوان في المنتصف */
+        padding: 2rem;
+        background-color: #f9f9f9;
+    }
+
+    /* تنسيق العنوان */
+    #Quote {
+        font-size: 3rem; /* زيادة حجم الخط */
+        color: #333;
+        margin-bottom: 1rem;
+        font-weight: bold;
+    }
+
+    /* تنسيق الحاوية التي تحتوي على الاقتباس */
+    .quote-container {
+        background-color: #f5f5f5;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* تنسيق الاقتباس */
+    #quote {
+        font-size: 1.5rem;
+        color: #555;
+        font-style: italic;
+    }
+
+    /* تنسيق زر الاقتباس العشوائي */
+    #random-quote-btn {
+        padding: 10px 20px;
+        background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+        color: white;
+        border: 7px solid #ddd;         
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, border-color 0.3s ease; 
+    }
+
+    /* تأثير عند المرور على الزر */
+    #random-quote-btn:hover {
+        background-color: #d5b0e7;
+        border-color: #aaa;  
+        transform: translateY(-5px);               
+    }
+
+    /* إخفاء الاقتباس مؤقتًا */
+    .hidden {
+        display: none;
+    }
+
+
+
+    /* تعديل عرض الـ Modal بالكامل */
+.modal {
+    display: none; /* إخفاء الـ Modal */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* الخلفية الشفافة */
+    transition: opacity 0.3s ease-in-out;
+}
+
+    .modalL-btn {
+        background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+        color: white;
+        border: none;
+        padding: 15px 60px; /* تعديل حجم الأزرار */
+        font-size: 16px; /* تعديل حجم الخط */
+        margin: 10px 0; /* تقليل المسافة بين الأزرار */
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-sizing: border-box;
+        width: 100%; /* جعل الأزرار بنفس العرض */
+      }
+      
+      .modalL-btn:hover {
+        transform: translateY(-2px); /* تحريك الزر لأعلى قليلاً */
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التمرير */
+      }
+      
+      #modall-title {
+        font-size: 1.8rem; /* تكبير العنوان */
+        margin-bottom: 20px; /* المسافة بين العنوان والأزرار */
+        font-weight: 600;
+        color: #444;
+      }
+      
+      .modalL-btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px; /* تقليل المسافة بين الأزرار */
+        width: 100%;
+        align-items: center;
+      }
+      
+      .modalL-content {
+        background-color: #f9f9f9;
+        margin: 10% auto;
+        padding: 30px;
+        border: 1px solid #ddd;
+        width: 85%;
+        max-width: 500px;
+        border-radius: 12px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      
+      .closeL {
+        color: #bbb;
+        font-size: 32px;
+        font-weight: bold;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+      }
+      
+      .closeL:hover,
+      .closeL:focus {
+        color: black;
+        text-decoration: none;
+      }
+      
+      .tab-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      
+      .tab-button {
+        background: none;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        color: #6c4f80;
+        transition: color 0.3s ease;
+      }
+      
+      .tab-button.active {
+        color: #9a84ad;
+        border-bottom: 2px solid #9a84ad;
+      }
+      
+      .tab-button:hover {
+        color: #9a84ad;
+      }
+      
+      .tab-content {
+        width: 100%;
+      }

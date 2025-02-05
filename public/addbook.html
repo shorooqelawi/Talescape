@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Book</title>
+  <link rel="stylesheet" href="addbook.css">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h2>Add Book to<br>Your <br>Library</h2>
+  <form id="add-book-form">
+    <label for="book-title">Book Title:</label>
+    <input type="text" id="book-title" name="book-title" required><br><br>
+
+    <label for="book-author">Author:</label>
+    <input type="text" id="book-author" name="book-author" required><br><br>
+
+    <label for="book-category">Category:</label>
+    <input type="text" id="book-category" name="book-category" required><br><br>
+
+    <label for="book-description">Description:</label>
+    <textarea id="book-description" name="book-description" required></textarea><br><br>
+
+    <label for="book-image">Image URL (Optional):</label>
+    <input type="text" id="book-image" name="book-image"><br><br>
+
+    <label for="book-price">Price:</label>
+    <input type="number" id="book-price" name="book-price" required><br><br>
+
+    <button type="submit">Add Book</button>
+
+    <button id="add-book-buttons">
+      <a href="MyLibrary.html" style="text-decoration: none; color: white; display: block;">Return</a>
+    </button>  
+  </form>
+
+  <div id="message"></div>
+
+  <script>
+    const addBookForm = document.getElementById('add-book-form');
+    const messageDiv = document.getElementById('message');
+
+    addBookForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const bookTitle = document.getElementById('book-title').value;
+  const bookAuthor = document.getElementById('book-author').value;
+  const bookCategory = document.getElementById('book-category').value;
+  const bookDescription = document.getElementById('book-description').value;
+  const bookPrice = parseFloat(document.getElementById('book-price').value);
+  const bookImage = document.getElementById('book-image').value;
+  const userEmail = localStorage.getItem('userEmail');
+
+  if (!bookTitle || !bookAuthor || !bookCategory || !bookDescription || isNaN(bookPrice) || bookPrice <= 0) {
+    messageDiv.textContent = 'Please fill out all fields with valid data, including a valid price.';
+    return;
+  }
+
+  if (!userEmail) {
+    alert("Please log in to add books.");
+    return;
+  }
+
+  // التحقق من وجود الكتاب في جدول books
+  fetch(`http://localhost:3000/check-book?title=${bookTitle}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.exists) {
+        // إذا كان الكتاب موجودًا، تحقق من وجوده في جدول library_books
+        checkAndAddBookToLibrary(data.bookId, bookPrice, userEmail);
+      } else {
+        // إذا لم يكن الكتاب موجودًا، أضفه إلى جدول books أولاً
+        addBookToDatabase(bookTitle, bookAuthor, bookCategory, bookDescription, bookImage, bookPrice, userEmail);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      messageDiv.textContent = 'Error checking the book.';
+    });
+});
+
+function addBookToDatabase(title, author, category, description, image, price, libraryEmail) {
+  const bookData = {
+    title: title,
+    author: author,
+    category: category,
+    description: description,
+    image_url: image,
+    price: price,
+    libraryEmail: libraryEmail
+  };
+
+  fetch('http://localhost:3000/add-book', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(bookData)
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // بعد إضافة الكتاب إلى جدول books، أضفه إلى جدول library_books
+        addBookToLibrary(data.bookId, price, libraryEmail);
+      } else {
+        messageDiv.textContent = 'Error adding book to the database: ' + data.error;
+      }
+    })
+    .catch(error => {
+      console.error('Error adding book:', error);
+      messageDiv.textContent = 'Error adding book to the database.';
+    });
+}
+
+function checkAndAddBookToLibrary(bookId, price, email) {
+  fetch(`http://localhost:3000/check-library-book?bookId=${bookId}&email=${email}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.exists) {
+        messageDiv.textContent = 'This book is already available in your library.';
+      } else {
+        addBookToLibrary(bookId, price, email);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      messageDiv.textContent = 'Error checking library book.';
+    });
+}
+
+function addBookToLibrary(bookId, price, email) {
+  const libraryBookData = {
+    bookId: bookId,
+    price: price,
+    libraryEmail: email
+  };
+
+  fetch('http://localhost:3000/add-library-book', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(libraryBookData)
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        messageDiv.textContent = 'Book added to your library successfully.';
+      } else {
+        messageDiv.textContent = 'Error adding book to your library.';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      messageDiv.textContent = 'Error adding book to your library.';
+    });
+}
+  </script>
+  <script>
+    // الاستماع إلى حدث الضغط على المستند
+    document.addEventListener('click', function(event) {
+      const messageDiv = document.getElementById('message'); // استدعاء العنصر الخاص بالرسالة
+      
+      // إذا كانت الرسالة مرئية
+      if (messageDiv.classList.contains('show')) {
+        // إخفاء الرسالة
+        messageDiv.classList.remove('show');
+        messageDiv.classList.add('hide');
+      }
+    });
+  
+    // التأكد من أنه حتى إذا تم الضغط على الرسالة نفسها، سيتم إخفاؤها
+  document.getElementById('message').addEventListener('click', function(event) {
+    // منع الإجراء الافتراضي، مثل التفاعل مع الضغط داخل الرسالة
+    event.stopPropagation(); // منع التفاعل مع الحدث الذي يمكن أن يؤدي إلى إخفائها في حالة أخرى
+    // إخفاء الرسالة عند الضغط عليها
+    this.classList.remove('show');
+    this.classList.add('hide');
+    // إعادة تعيين الفورم
+  document.getElementById('add-book-form').reset();
+    });
+    // تحقق من حالة تسجيل الدخول عبر localStorage
+  const userEmail = localStorage.getItem('userEmail');  // جلب البريد الإلكتروني من localStorage
+  let isLoggedIn = false;
+
+  // دالة لعرض أو إخفاء قائمة الحساب
+  function toggleAccountList() {
+      const accountList = document.getElementById('account-list');
+      if (accountList.style.display === 'none') {
+          accountList.style.display = 'block';
+          if (isLoggedIn) {
+              document.getElementById('account-email').textContent = userEmail;
+          } else {
+              document.getElementById('account-email').textContent = 'Not logged in';
+          }
+      } else {
+          accountList.style.display = 'none';
+      }
+  }
+
+  // دالة لتسجيل الخروج مع رسالة تأكيد
+  function logout() {
+      if (confirm(" Are you sure you want to log out?")) {
+          // مسح البريد الإلكتروني من localStorage
+          localStorage.removeItem('userEmail');
+          window.location.href = "index.html";  // إعادة التوجيه إلى صفحة index.html بعد تسجيل الخروج
+      }
+  }
+
+  // إضافة حدث للنقر على أيقونة الحساب
+  document.getElementById('account-icon').addEventListener('click', toggleAccountList);
+
+  // إضافة حدث للنقر على رابط "تسجيل الخروج"
+  document.getElementById('logout-link').addEventListener('click', logout);
+
+  // تحقق مما إذا كان المستخدم قد سجل الدخول أم لا
+  if (userEmail) {
+      isLoggedIn = true;
+  } else {
+      isLoggedIn = false;
+  }
+  </script>
+  
+</body>
+</html>

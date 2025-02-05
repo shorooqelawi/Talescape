@@ -1,0 +1,747 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* تنسيق الأيقونات */
+.icon-link {
+    font-size: 22px;            /* حجم الأيقونة */
+    color: #333;                /* اللون الافتراضي للأيقونة */
+    text-decoration: none;      /* إزالة التسطير من الروابط */
+    transition: color 0.3s ease;/* تأثير التغيير عند التمرير */
+    display: flex;              /* استخدام flex داخل الرابط لضمان محاذاة العناصر داخله */
+    align-items: center;        /* محاذاة الأيقونة داخل الرابط بشكل عمودي */
+}
+
+.icon-link i {
+    font-size: 22px;            /* حجم الأيقونة الثابت */
+    display: inline-block;
+}
+
+/* تغيير اللون عند التمرير فوق الأيقونة */
+.icon-link:hover {
+    color: #007bff;             /* تغيير اللون عند التمرير */
+}
+
+.book.hidden {
+    display: none;
+}
+/* Global Styles */
+body {
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #f4f4f4;
+    background-image: url('imge/eng.jpg');
+    background-size: cover;
+    background-attachment: fixed; /* تأثير Parallax */
+    background-position: center center;
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.7); /* خلفية شفافة داكنة */
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
+  header .logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.3s;
+  }
+  
+  header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  
+  header nav a:hover {
+    color: #cb742c; /* لون برتقالي عند التمرير */
+  }
+  
+  .header-icons a {
+    color: white;
+    margin: 0 10px;
+    font-size: 20px;
+    transition: color 0.3s ease;
+  }
+  
+  .header-icons a:hover {
+    color: #cb742c; /* لون برتقالي عند التمرير */
+  }
+  
+  .header-icons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-icons a {
+    color: #fff;
+    margin: 0 0.5rem;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+  }
+  
+  .header-icons a:hover {
+    color: #cb742c;
+  }
+  
+
+/* Filter Modal */
+.filter-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* تأثير داكن في الخلفية */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.filter-modal-content {
+    background-color: rgba(61, 59, 59, 0.8); /* خلفية شبه شفافة */
+    padding: 20px;
+    border-radius: 8px;
+    width: 600px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 3px;
+    right:3px;
+    font-size: 25px;
+    cursor: pointer;
+    color: white;
+}
+
+.filter-select,
+.filter-search {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.filter-search {
+    margin-bottom: 10px;
+}
+
+.apply-filters-btn {
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.apply-filters-btn:hover {
+    background-color: #4a1663;
+}
+
+/* Button to open the filter */
+.filter-icon {
+    position: absolute;
+    top: 15%;
+    right: 10%;
+    background-color: #482756;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.filter-icon:hover {
+    background-color: #4a1663;
+}
+
+/* Book List Styles */
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 100px;
+}
+
+.book-list-container {
+    background-color: rgba(0, 0, 0, 0.7); /* خلفية شبه شفافة */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    text-align: center;
+}
+
+.book-list-container h1 {
+    font-size: 2rem;
+    color: #fff; /* جعل العنوان باللون الأبيض ليتناسق مع الخلفية الداكنة */
+}
+
+/* Book List */
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    padding-top: 20px;
+}
+
+/* Book Item */
+.book-item {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.book-item:hover {
+    transform: translateY(-10px);
+}
+
+.book-item img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.book-item h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.book-item p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.book-item .view-button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.book-item .view-button:hover {
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+}
+
+/* Button to open the filter */
+.filter-icon {
+    position: absolute;
+    top: 21%;  /* جعلها تنزل قليلاً من أعلى الصفحة */
+    right: 11%; /* الحفاظ على محاذاتها في الطرف الأيمن */
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.filter-icon:hover {
+    background-color: #4a1663;
+}
+.filter-modal-content {
+    background-color: rgba(61, 59, 59, 0.9); /* جعل الشفافية أقل لزيادة الوضوح */
+    padding: 20px;
+    border-radius: 8px;
+    width: 600px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+/* تنسيق حساب المستخدم وقائمة تسجيل الخروج */
+.account-list {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 10px; /* إضافة مسافة بين الأيقونة والقائمة */
+}
+
+.account-list ul {
+    list-style: none;
+}
+
+.account-list li {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.account-list a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #6c4f80;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.account-list a:hover {
+    color: #cb742c; /* تغيير اللون عند التمرير */
+    transform: translateX(5px); /* تحريك العنصر قليلاً */
+}
+
+.account-list a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.account-list a:hover i {
+    color: #cb742c; /* تغيير لون الأيقونة عند التمرير */
+}
+
+/* التأثيرات عند المرور على العنصر */
+.account-list a {
+    transition: all 0.3s ease;
+}
+
+.account-list a:hover {
+    transform: translateX(5px); /* التحريك الجانبي عند التمرير */
+}
+
+/* التنسيق لأيقونة الحساب */
+#account-icon {
+    margin-bottom: 5px; /* إضافة مسافة أسفل أيقونة الحساب */
+}
+.header-icons {
+    display: flex;
+    align-items: center;
+}
+
+.header-icons a {
+    color: #fff;
+    margin: 0 0.5rem;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.header-icons a:hover {
+    color:  #cb742c;
+}
+
+/* تعديل تنسيق قائمة الحساب */
+.account-list {
+    display: none; /* مخفية في البداية */
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px; /* عرض مناسب للقائمة */
+    font-size: 1rem;
+    position: absolute;
+    top: 50px; /* ضعها تحت الأيقونة مباشرة */
+    right: 10px; /* تحديد المسافة بين القائمة والحافة اليمنى */
+    z-index: 2001; /* تأكد من أن القائمة ستظهر فوق باقي العناصر */
+}
+
+/* إضافة تأثير عند ظهور قائمة الحساب */
+.account-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-list ul li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.account-list ul li:last-child {
+    border-bottom: none;
+}
+
+.account-list a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1rem;
+}
+
+.account-list a:hover {
+    color:#846191;
+}
+/* تحسين عرض الكتب بشكل مرتب */
+.books {
+    display: grid; /* استخدام الشبكة */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* عرض الكتب في أعمدة مرنة */
+    gap: 20px; /* المسافة بين العناصر */
+    padding: 20px; /* مسافة حول محتوى الكتب */
+}
+
+/* تنسيق بطاقة الكتاب */
+.book-card {
+    background-color:rgba(0, 0, 0, 0.7); /* نفس اللون الشفاف *//* خلفية بيضاء لبطاقة الكتاب */
+    border-radius: 10px; /* حواف دائرية */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* ظل خفيف حول البطاقة */
+    overflow: hidden; /* لحماية المحتوى داخل البطاقة */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* تأثير عند التحويم */
+    padding: 15px; /* مسافة داخل البطاقة */
+    text-align: center; /* محاذاة النص إلى الوسط */
+}
+
+.book-card:hover {
+    transform: translateY(-5px); /* رفع البطاقة عند التمرير */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* إضافة ظل عند التمرير */
+}
+
+/* تنسيق صورة الكتاب */
+.book-card img {
+    width: 100%; /* جعل الصورة تأخذ كامل عرض البطاقة */
+    height: auto;
+    border-radius: 8px; /* حواف دائرية للصورة */
+}
+
+/* تنسيق عنوان الكتاب */
+.book-card h3 {
+    font-size: 1.25em; /* حجم الخط */
+    font-weight: bold;
+    margin: 10px 0; /* مسافة حول العنوان */
+}
+
+/* تنسيق وصف الكتاب */
+.book-card p {
+    font-size: 1em; /* حجم الخط */
+    color: #555; /* لون خط أغمق */
+    margin: 10px 0; /* مسافة حول الوصف */
+}
+
+
+
+/* تنسيق العنوان العام للصفحة */
+h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 20px;
+    color: #333;
+}
+
+/* تحسين مظهر الصفحة بالكامل */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7; /* خلفية ناعمة للصفحة */
+    margin: 0;
+    padding: 0;
+}
+
+/* تحسين المظهر العام للصفحة */
+.container {
+    width: 100%;
+    max-width: 1200px; /* تحديد أقصى عرض للمحتوى */
+    margin: 0 auto; /* مركز المحتوى */
+    padding: 20px;
+}
+
+/* تحسين المسافات في الصفحة */
+.container .books {
+    margin-top: 30px; /* مسافة بين العنوان وقائمة الكتب */
+}
+
+/* تنسيق الـ Modal ليظهر فوق كل شيء */
+.modal {
+    display: none; /* إخفاء الـ Modal افتراضياً */
+    position: fixed;
+    z-index: 2000; /* تعيين الـ z-index ليظهر فوق كل شيء */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* الخلفية الشفافة */
+    transition: opacity 0.3s ease-in-out;
+}
+/* تعديل التصميم الأساسي للـ Modal */
+.modal-content {
+    background-color: #f9f9f9; /* لون خلفية الـ Modal */
+    margin: 10% auto;
+    padding: 30px; /* زيادة الحشو قليلاً لتوسيع الـ Modal */
+    border: 1px solid #ddd; /* حدود أفتح */
+    width: 85%; /* عرض الـ Modal */
+    max-width: 600px; /* عرض الـ Modal ليكون أكبر */
+    border-radius: 12px; /* تحسين الزوايا */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* إضافة الظل حول الـ Modal */
+}
+
+/* زر الإغلاق */
+.close {
+    color: #bbb;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* تحسين الأزرار في الـ Modal */
+.modal-btn {
+    background-color: #6c4f80; /* اللون الأساسي للأزرار */
+    color: white;
+    border: none;
+    padding: 20px 80px; /* زيادة حجم الأزرار بشكل ملحوظ */
+    font-size: 18px; /* تكبير الخط داخل الأزرار */
+    margin: 10px 0; /* تقليل المسافة بين الأزرار */
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100%; /* جعل الأزرار تأخذ عرض أكبر داخل الـ Modal */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-sizing: border-box;
+}
+
+/* التأثير عند المرور على الأزرار */
+.modal-btn:hover {
+    background-color: #52365c;
+    transform: scale(1.05); /* تكبير الأزرار عند التمرير */
+}
+
+/* تعديل التنسيق للـ Modal title */
+#modal-title {
+    font-size: 1.8rem; /* تكبير العنوان */
+    margin-bottom: 30px; /* المسافة بين العنوان والأزرار */
+    font-weight: 600;
+    color: #444;
+}
+
+/* تنسيق الحاوية التي تحتوي الأزرار */
+.modal-btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* تقليل المسافة بين الأزرار */
+    width: 100%;
+    align-items: center;
+}
+
+/* تعديل عرض الـ Modal بالكامل */
+.modal {
+    display: none; /* إخفاء الـ Modal */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* الخلفية الشفافة */
+    transition: opacity 0.3s ease-in-out;
+}
+/* تنسيق زر الفلتر */
+.filter-icon {
+    background-color: #482756;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 100;  /* يضمن أنه يظهر فوق باقي العناصر */
+}
+/* تحسين الأزرار في الـ Modal */
+.modal-btn {
+    background-color: #6c4f80; /* اللون الأساسي للأزرار */
+    color: white;
+    border: none;
+    padding: 20px 80px; /* زيادة حجم الأزرار بشكل ملحوظ */
+    font-size: 18px; /* تكبير الخط داخل الأزرار */
+    margin: 10px 0; /* تقليل المسافة بين الأزرار */
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100%; /* جعل الأزرار تأخذ عرض أكبر داخل الـ Modal */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-sizing: border-box;
+}
+
+/* التأثير عند المرور على الأزرار */
+.modal-btn:hover {
+    background-color: #52365c;
+    transform: scale(1.05); /* تكبير الأزرار عند التمرير */
+}
+
+/* تعديل التنسيق للـ Modal title */
+#modal-title {
+    font-size: 1.8rem; /* تكبير العنوان */
+    margin-bottom: 30px; /* المسافة بين العنوان والأزرار */
+    font-weight: 600;
+    color: #444;
+}
+
+/* تنسيق الحاوية التي تحتوي الأزرار */
+.modal-btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* تقليل المسافة بين الأزرار */
+    width: 100%;
+    align-items: center;
+}
+
+/* تعديل عرض الـ Modal بالكامل */
+.modalL-btn {
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    padding: 15px 60px; /* تعديل حجم الأزرار */
+    font-size: 16px; /* تعديل حجم الخط */
+    margin: 10px 0; /* تقليل المسافة بين الأزرار */
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-sizing: border-box;
+    width: 100%; /* جعل الأزرار بنفس العرض */
+  }
+  
+  .modalL-btn:hover {
+    transform: translateY(-2px); /* تحريك الزر لأعلى قليلاً */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التمرير */
+  }
+  
+  #modall-title {
+    font-size: 1.8rem; /* تكبير العنوان */
+    margin-bottom: 20px; /* المسافة بين العنوان والأزرار */
+    font-weight: 600;
+    color: #444;
+  }
+  
+  .modalL-btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* تقليل المسافة بين الأزرار */
+    width: 100%;
+    align-items: center;
+  }
+  
+  .modalL-content {
+    background-color: #f9f9f9;
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    width: 85%;
+    max-width: 500px;
+    border-radius: 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .closeL {
+    color: #bbb;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+  }
+  
+  .closeL:hover,
+  .closeL:focus {
+    color: black;
+    text-decoration: none;
+  }
+  
+  .tab-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .tab-button {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #6c4f80;
+    transition: color 0.3s ease;
+  }
+  
+  .tab-button.active {
+    color: #9a84ad;
+    border-bottom: 2px solid #9a84ad;
+  }
+  
+  .tab-button:hover {
+    color: #9a84ad;
+  }
+  
+  .tab-content {
+    width: 100%;
+  } 
+
+  .filter-icon {
+    position: absolute;
+    top: 21%;  /* جعلها تنزل قليلاً من أعلى الصفحة */
+    right: 11%; /* الحفاظ على محاذاتها في الطرف الأيمن */
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1001;
+}

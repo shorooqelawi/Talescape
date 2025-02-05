@@ -1,0 +1,976 @@
+body {
+  font-family: 'Rubik', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #f4f4f4;
+  background-image: url('imge/booknew.jpg');
+  background-size: cover;
+  background-attachment: fixed; /* تأثير Parallax */
+  background-position: center center;
+}
+header {
+  background-color: rgba(0, 0, 0, 0.7); /* خلفية شفافة داكنة */
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+header .logo a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.3s;
+}
+
+header nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 1rem;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+header nav a:hover {
+  color: #cb742c; /* لون برتقالي عند التمرير */
+}
+
+.header-icons a {
+  color: white;
+  margin: 0 10px;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.header-icons a:hover {
+  color: #cb742c; /* لون برتقالي عند التمرير */
+}
+
+#book-details {
+  max-width: 800px; /* تقليل العرض الأقصى */
+  margin: 100px auto 50px; /* زيادة الهامش العلوي لتجنب التداخل مع الشريط */
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.6); /* خلفية سوداء شفافة */
+  color: white;
+  border-radius: 10px;
+  text-align: center; /* توسيط النص */
+}
+
+#book-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+#book-image {
+  max-width: 250px; /* تقليل حجم الصورة */
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#book-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+#book-title {
+  font-size: 2em; /* تصغير حجم العنوان */
+  font-weight: bold;
+  color: #fff; /* لون أبيض */
+  margin-bottom: 10px;
+}
+
+#book-author, #book-category {
+  font-size: 1.2em;
+  color: #ccc; /* لون رمادي فاتح */
+  margin-bottom: 10px;
+}
+
+#book-description-text {
+  font-size: 1em;
+  color: #ccc; /* لون رمادي فاتح */
+  line-height: 1.6;
+  margin-top: 15px;
+}
+#libraries-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.library-item {
+  background-color: rgba(255, 255, 255, 0.1); /* خلفية شفافة */
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+
+.library-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.library-item p {
+  margin: 5px 0;
+  color: #ccc; /* لون رمادي فاتح */
+}
+
+.library-item .library-name {
+  font-weight: bold;
+  color: #fff; /* لون أبيض */
+}
+
+.library-item .library-address {
+  font-style: italic;
+  color: #ccc; /* لون رمادي فاتح */
+}
+.reserve-btn {
+  background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 30px; /* زوايا دائرية */
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+  transition: transform 0.3s, box-shadow 0.3s; /* تأثيرات عند التمرير */
+  margin-top: 15px;
+}
+
+.reserve-btn:hover {
+  transform: translateY(-2px); /* تحريك الزر لأعلى قليلاً */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التمرير */
+}
+.modal {
+  display: none; /* مخفي افتراضيًا */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* خلفية سوداء شفافة */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 10% auto;
+  position: relative;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.modal .close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal .close:hover {
+  color: #000;
+}
+
+#reservation-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+#reservation-form select,
+#reservation-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 2px solid #6c4f80;
+  border-radius: 5px;
+  font-size: 1em;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#reservation-form textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+#reservation-form select:focus,
+#reservation-form textarea:focus {
+  border-color: #9a84ad;
+  box-shadow: 0 0 12px rgba(108, 79, 128, 0.1);
+  outline: none;
+}
+
+#reservation-form button {
+  background: linear-gradient(135deg, #6c4f80, #9a84ad);
+  color: white;
+  padding: 12px 24px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#reservation-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+.icon-link {
+  font-size: 22px;            /* حجم الأيقونة */
+  color: #333;                /* اللون الافتراضي للأيقونة */
+  text-decoration: none;      /* إزالة التسطير من الروابط */
+  transition: color 0.3s ease;/* تأثير التغيير عند التمرير */
+  display: flex;              /* استخدام flex داخل الرابط لضمان محاذاة العناصر داخله */
+  align-items: center;        /* محاذاة الأيقونة داخل الرابط بشكل عمودي */
+}
+
+.icon-link i {
+  font-size: 22px;            /* حجم الأيقونة الثابت */
+  display: inline-block;
+}
+
+/* تغيير اللون عند التمرير فوق الأيقونة */
+.icon-link:hover {
+  color: #007bff;             /* تغيير اللون عند التمرير */
+}
+
+.modal-btn {
+  background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+  color: white;
+  border: none;
+  padding: 20px 80px; /* زيادة حجم الأزرار بشكل ملحوظ */
+  font-size: 18px; /* تكبير الخط داخل الأزرار */
+  margin: 10px 0; /* تقليل المسافة بين الأزرار */
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-sizing: border-box;
+}
+
+.modal-btn:hover {
+  transform: translateY(-2px); /* تحريك الزر لأعلى قليلاً */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التمرير */
+}
+
+/* تعديل التنسيق للـ Modal title */
+#modal-title {
+  font-size: 1.8rem; /* تكبير العنوان */
+  margin-bottom: 30px; /* المسافة بين العنوان والأزرار */
+  font-weight: 600;
+  color: #444;
+}
+
+/* تنسيق الحاوية التي تحتوي الأزرار */
+.modal-btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* تقليل المسافة بين الأزرار */
+  width: 100%;
+  align-items: center;
+}
+
+/* تنسيق الـ Modal */
+.modal-content {
+  background-color: #f9f9f9;
+  margin: 10% auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  width: 85%;
+  max-width: 500px;
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* زر الإغلاق داخل الـ Modal */
+.close {
+  color: #bbb;
+  font-size: 32px;
+  font-weight: bold;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+#reservation-form button {
+  background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 30px; /* زوايا دائرية */
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+  transition: transform 0.3s, box-shadow 0.3s; /* تأثيرات عند التمرير */
+  width: 100%; /* عرض كامل */
+}
+
+#reservation-form button:hover {
+  transform: translateY(-2px); /* تحريك الزر لأعلى قليلاً */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التمرير */
+}
+.modal {
+  display: none; /* إخفاء الـ Modal افتراضياً */
+  position: fixed;
+  z-index: 2000; /* تعيين الـ z-index ليظهر فوق كل شيء */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* الخلفية الشفافة */
+  transition: opacity 0.3s ease-in-out;
+}
+
+.modal-content {
+  background-color: #f9f9f9;
+  margin: 10% auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  width: 85%;
+  max-width: 500px;
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+  color: #bbb;
+  font-size: 32px;
+  font-weight: bold;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+}
+
+.header-icons a {
+  color: #fff;
+  margin: 0 0.5rem;
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.header-icons a:hover {
+  color: #cb742c;
+}
+
+.account-list {
+  display: none; /* مخفية في البداية */
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 180px; /* عرض مناسب للقائمة */
+  font-size: 1rem;
+  position: absolute;
+  top: 50px; /* ضعها تحت الأيقونة مباشرة */
+  right: 10px; /* تحديد المسافة بين القائمة والحافة اليمنى */
+  z-index: 2000; /* تأكد من أن القائمة ستظهر فوق باقي العناصر */
+}
+
+.account-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-list ul li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.account-list ul li:last-child {
+  border-bottom: none;
+}
+
+.account-list a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+}
+
+.account-list a:hover {
+  color: #846191;
+}
+.icon-link {
+  font-size: 22px;            /* حجم الأيقونة */
+  color: #333;                /* اللون الافتراضي للأيقونة */
+  text-decoration: none;      /* إزالة التسطير من الروابط */
+  transition: color 0.3s ease;/* تأثير التغيير عند التمرير */
+  display: flex;              /* استخدام flex داخل الرابط لضمان محاذاة العناصر داخله */
+  align-items: center;        /* محاذاة الأيقونة داخل الرابط بشكل عمودي */
+}
+
+.icon-link i {
+  font-size: 22px;            /* حجم الأيقونة الثابت */
+  display: inline-block;
+}
+
+/* تغيير اللون عند التمرير فوق الأيقونة */
+.icon-link:hover {
+  color: #007bff;             /* تغيير اللون عند التمرير */
+}
+.modal {
+  display: none; /* إخفاء الـ Modal افتراضياً */
+  position: fixed;
+  z-index: 2000; /* تعيين الـ z-index ليظهر فوق كل شيء */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* الخلفية الشفافة */
+  transition: opacity 0.3s ease-in-out;
+}
+
+.modal-content {
+  background-color: #f9f9f9;
+  margin: 10% auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  width: 85%;
+  max-width: 500px;
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+  color: #bbb;
+  font-size: 32px;
+  font-weight: bold;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+#libraries-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 أعمدة */
+  gap: 20px; /* المسافة بين العناصر */
+  margin-top: 30px;
+}
+
+.library-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+
+.library-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 900px) {
+  #libraries-info {
+      grid-template-columns: repeat(2, 1fr); /* 2 أعمدة على الشاشات المتوسطة */
+  }
+}
+
+@media (max-width: 600px) {
+  #libraries-info {
+      grid-template-columns: 1fr; /* عمود واحد على الشاشات الصغيرة */
+  }
+}
+/* تنسيق content-wrapper */
+.content-wrapper {
+  max-width: 750px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.6); /* خلفية سوداء شفافة */
+  color: #333; /* لون النص داكن */
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* إضافة ظل خفيف */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* توسيط العناصر أفقيًا */
+  justify-content: center; /* توسيط العناصر عموديًا */
+}
+
+.content-wrapper h2 {
+  color: #6c4f80; /* لون بنفسجي للعناوين */
+  margin-bottom: 20px;
+}
+
+.content-wrapper p {
+  color: #555; /* لون رمادي للنصوص */
+}
+
+#libraries-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* يتكيف مع العرض */
+  gap: 20px; /* المسافة بين العناصر */
+  margin-top: 20px;
+  width: 100%; /* تأكد من أن الـ Grid يأخذ العرض الكامل */
+}
+
+.library-item {
+  background-color: #f9f9f9; /* خلفية فاتحة لكل مكتبة */
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, 
+  box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.library-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.library-item p {
+  margin: 5px 0;
+  color: #555; /* لون رمادي للنصوص */
+}
+
+.library-item .library-name {
+  font-weight: bold;
+  color: #6c4f80; /* لون بنفسجي */
+}
+
+.library-item .library-address {
+  font-style: italic;
+  color: #777; /* لون رمادي فاتح */
+}
+
+.reserve-btn {
+  background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+  transition: transform 0.3s, box-shadow 0.3s; /* تأثيرات عند التمرير */
+  margin-top: 15px;
+}
+
+.reserve-btn:hover {
+  transform: translateY(-2px); /* تحريك الزر لأعلى قليلاً */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التمرير */
+}
+
+#libraries-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 مكتبات في كل سطر */
+  gap: 20px;
+  margin-top: 20px;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+.modalL-btn {
+  background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+  color: white;
+  border: none;
+  padding: 20px 80px; /* زيادة حجم الأزرار بشكل ملحوظ */
+  font-size: 18px; /* تكبير الخط داخل الأزرار */
+  margin: 10px 0; /* تقليل المسافة بين الأزرار */
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-sizing: border-box;
+}
+
+.modalL-btn:hover {
+  transform: translateY(-2px); /* تحريك الزر لأعلى قليلاً */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التمرير */
+}
+
+/* تعديل التنسيق للـ Modal title */
+#modall-title {
+  font-size: 1.8rem; /* تكبير العنوان */
+  margin-bottom: 30px; /* المسافة بين العنوان والأزرار */
+  font-weight: 600;
+  color: #444;
+}
+
+/* تنسيق الحاوية التي تحتوي الأزرار */
+.modalL-btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* تقليل المسافة بين الأزرار */
+  width: 100%;
+  align-items: center;
+}
+
+/* تنسيق الـ Modal */
+.modalL-content {
+  background-color: #f9f9f9;
+  margin: 10% auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  width: 85%;
+  max-width: 500px;
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* زر الإغلاق داخل الـ Modal */
+.closeL {
+  color: #bbb;
+  font-size: 32px;
+  font-weight: bold;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.closeL:hover,
+.closeL:focus {
+  color: black;
+  text-decoration: none;
+}
+/* Modal for Reservation */
+.modal {
+  display: none; /* مخفي بشكل افتراضي */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* خلفية شبه شفافة */
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 10px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Form inside Modal */
+#reservation-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* زيادة حجم select و textarea */
+#reservation-form select,
+#reservation-form textarea {
+    width: 100%;
+    padding: 15px; /* زيادة الحشو */
+    margin-top: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.2rem; /* زيادة حجم الخط */
+    background-color: #f9f9f9;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#reservation-form textarea {
+    height: 150px; /* زيادة ارتفاع textarea */
+    resize: vertical; /* يسمح بتغيير الارتفاع */
+}
+
+#reservation-form textarea {
+  height: 150px; /* زيادة ارتفاع حقل الملاحظات */
+  
+}
+
+#reservation-form button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#reservation-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+/* Modal for Reservation */
+.reservation-modal {
+  display: none; /* مخفي بشكل افتراضي */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* خلفية شبه شفافة */
+}
+
+.modal-content-res {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.close-res{
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-res:hover {
+  color: #000;
+}
+
+/* Form inside Modal */
+#reservation-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+#reservation-form select,
+#reservation-form textarea {
+  width: 96%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 2px solid #6c4f80;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#reservation-form select:focus,
+#reservation-form textarea:focus {
+  border-color: #9a84ad;
+  box-shadow: 0 0 12px rgba(108, 79, 128, 0.1);
+  outline: none;
+}
+
+#reservation-form textarea {
+  height: 150px; /* زيادة ارتفاع حقل الملاحظات */
+  
+}
+
+#reservation-form button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#reservation-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+.modalL-btn {
+  background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+  color: white;
+  border: none;
+  padding: 15px 60px; /* تعديل حجم الأزرار */
+  font-size: 16px; /* تعديل حجم الخط */
+  margin: 10px 0; /* تقليل المسافة بين الأزرار */
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-sizing: border-box;
+  width: 100%; /* جعل الأزرار بنفس العرض */
+}
+
+.modalL-btn:hover {
+  transform: translateY(-2px); /* تحريك الزر لأعلى قليلاً */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التمرير */
+}
+
+#modall-title {
+  font-size: 1.8rem; /* تكبير العنوان */
+  margin-bottom: 20px; /* المسافة بين العنوان والأزرار */
+  font-weight: 600;
+  color: #444;
+}
+
+.modalL-btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* تقليل المسافة بين الأزرار */
+  width: 100%;
+  align-items: center;
+}
+
+.modalL-content {
+  background-color: #f9f9f9;
+  margin: 10% auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  width: 85%;
+  max-width: 500px;
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.closeL {
+  color: #bbb;
+  font-size: 32px;
+  font-weight: bold;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.closeL:hover,
+.closeL:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.tab-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #6c4f80;
+  transition: color 0.3s ease;
+}
+
+.tab-button.active {
+  color: #9a84ad;
+  border-bottom: 2px solid #9a84ad;
+}
+
+.tab-button:hover {
+  color: #9a84ad;
+}
+
+.tab-content {
+  width: 100%;
+} 

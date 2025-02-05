@@ -1,0 +1,622 @@
+/* General Styles */
+body {
+    font-family: 'Rubik', sans-serif;
+    background: url('imge/librarybanner.webp') no-repeat center center/cover fixed; /* إضافة خلفية الصورة مع خاصية fixed */
+    color: #fff;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for Content */
+section {
+    background-color: rgba(0, 0, 0, 0.7); /* خلفية سوداء شفافة */
+    padding: 20px; /* تقليل الهامش الداخلي */
+    border-radius: 15px;
+    width: 80%; /* تقليل العرض */
+    max-width: 800px; /* تقليل الحد الأقصى للعرض */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    margin: 20px 0; /* إضافة هامش لتجنب التصاق المحتوى بالأعلى أو الأسفل */
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Search Form */
+#searchForm {
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#searchForm input[type="text"] {
+    padding: 12px 20px;
+    width: 300px;
+    border: 2px solid #6c4f80;
+    border-radius: 30px;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.9); /* خلفية شفافة للحقل */
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#searchForm input[type="text"]:focus {
+    border-color: #9a84ad;
+    box-shadow: 0 0 12px rgba(108, 79, 128, 0.8);
+    outline: none;
+}
+
+#searchForm button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#searchForm button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Filters */
+#filters {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filter-select {
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: 2px solid #6c4f80;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.9); /* خلفية شفافة للقائمة */
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    width: 300px;
+    appearance: none; /* إزالة المظهر الافتراضي للقائمة */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%236c4f80"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.filter-select:focus {
+    border-color: #9a84ad;
+    box-shadow: 0 0 12px rgba(108, 79, 128, 0.8);
+    outline: none;
+}
+
+/* Results */
+#results {
+    margin-top: 20px;
+}
+
+.book {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.9); /* خلفية شفافة للكتاب */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: flex-start;
+    color: #333;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.book:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.book img {
+    max-width: 100px;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+
+.book-details {
+    flex: 1;
+}
+
+.book h2 {
+    font-size: 1.5rem;
+    color: #6c4f80;
+    margin-bottom: 10px;
+}
+
+.book p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+}
+
+.book button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.book button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Login Message */
+.login-message {
+    text-align: center;
+    margin-top: 20px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.login-link {
+    color: #6c4f80;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.login-link:hover {
+    color: #9a84ad;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #searchForm {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #searchForm input[type="text"],
+    .filter-select {
+        width: 100%;
+    }
+
+    .book {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .book img {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* نفس اللون الشفاف */
+    color: #fff;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1002;
+}
+
+header .logo a {
+    font-size: 1.5rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+header nav a:hover {
+    color: #cb742c;
+}
+
+/* تنسيق الـ Modal ليظهر فوق كل شيء */
+.modal {
+    display: none; /* إخفاء الـ Modal افتراضياً */
+    position: fixed;
+    z-index: 2000; /* تعيين الـ z-index ليظهر فوق كل شيء */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* الخلفية الشفافة */
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* تنسيق الـ Modal */
+.modal-content {
+    background-color: #f9f9f9;
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    width: 85%;
+    max-width: 600px;
+    border-radius: 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* زر الإغلاق داخل الـ Modal */
+.close {
+    color: #bbb;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* تنسيق حساب المستخدم وقائمة تسجيل الخروج */
+.account-list {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 10px; /* إضافة مسافة بين الأيقونة والقائمة */
+}
+
+.account-list ul {
+    list-style: none;
+}
+
+.account-list li {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.account-list a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #6c4f80;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.account-list a:hover {
+    color: #cb742c; /* تغيير اللون عند التمرير */
+    transform: translateX(5px); /* تحريك العنصر قليلاً */
+}
+
+.account-list a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.account-list a:hover i {
+    color: #cb742c; /* تغيير لون الأيقونة عند التمرير */
+}
+
+/* التأثيرات عند المرور على العنصر */
+.account-list a {
+    transition: all 0.3s ease;
+}
+
+.account-list a:hover {
+    transform: translateX(5px); /* التحريك الجانبي عند التمرير */
+}
+
+/* التنسيق لأيقونة الحساب */
+#account-icon {
+    margin-bottom: 5px; /* إضافة مسافة أسفل أيقونة الحساب */
+}
+.header-icons {
+    display: flex;
+    align-items: center;
+}
+
+.header-icons a {
+    color: #fff;
+    margin: 0 0.5rem;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.header-icons a:hover {
+    color:  #cb742c;
+}
+
+/* تعديل تنسيق قائمة الحساب */
+.account-list {
+    display: none; /* مخفية في البداية */
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px; /* عرض مناسب للقائمة */
+    font-size: 1rem;
+    position: absolute;
+    top: 50px; /* ضعها تحت الأيقونة مباشرة */
+    right: 10px; /* تحديد المسافة بين القائمة والحافة اليمنى */
+    z-index: 2000; /* تأكد من أن القائمة ستظهر فوق باقي العناصر */
+}
+
+/* إضافة تأثير عند ظهور قائمة الحساب */
+.account-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-list ul li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.account-list ul li:last-child {
+    border-bottom: none;
+}
+
+.account-list a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1rem;
+}
+
+.account-list a:hover {
+    color:#846191;
+}
+
+/* تعديل التصميم الأساسي للـ Modal */
+.modal-content {
+    background-color: #f9f9f9; /* لون خلفية الـ Modal */
+    margin: 10% auto;
+    padding: 30px; /* زيادة الحشو قليلاً لتوسيع الـ Modal */
+    border: 1px solid #ddd; /* حدود أفتح */
+    width: 80%; /* عرض الـ Modal */
+    max-width: 500px; /* عرض الـ Modal ليكون أكبر */
+    border-radius: 12px; /* تحسين الزوايا */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* إضافة الظل حول الـ Modal */
+}
+
+/* زر الإغلاق */
+.close {
+    color: #bbb;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: rgb(255, 249, 249);
+    text-decoration: none;
+}
+
+/* تحسين الأزرار في الـ Modal */
+.modal-btn {
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    padding: 20px 80px; /* زيادة حجم الأزرار بشكل ملحوظ */
+    font-size: 18px; /* تكبير الخط داخل الأزرار */
+    margin: 10px 0; /* تقليل المسافة بين الأزرار */
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100%; /* جعل الأزرار تأخذ عرض أكبر داخل الـ Modal */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-sizing: border-box;
+}
+
+
+/* التأثير عند المرور على الأزرار */
+.modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* تعديل التنسيق للـ Modal title */
+#modal-title {
+    font-size: 1.8rem; /* تكبير العنوان */
+    margin-bottom: 30px; /* المسافة بين العنوان والأزرار */
+    font-weight: 600;
+    color: #444;
+}
+
+/* تنسيق الحاوية التي تحتوي الأزرار */
+.modal-btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* تقليل المسافة بين الأزرار */
+    width: 100%;
+    align-items: center;
+}
+
+/* تعديل عرض الـ Modal بالكامل */
+.modal {
+    display: none; /* إخفاء الـ Modal */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* الخلفية الشفافة */
+    transition: opacity 0.3s ease-in-out;
+}
+/* زر الإغلاق داخل الـ Modal */
+.close {
+    color: #bbb;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+.maps {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.maps:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+.maps {
+    text-decoration: none; /* إزالة الخط من الرابط */
+}
+.modalL-btn {
+    background: linear-gradient(135deg, #6c4f80, #9a84ad); /* تدرج لوني */
+    color: white;
+    border: none;
+    padding: 15px 60px; /* تعديل حجم الأزرار */
+    font-size: 16px; /* تعديل حجم الخط */
+    margin: 10px 0; /* تقليل المسافة بين الأزرار */
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-sizing: border-box;
+    width: 100%; /* جعل الأزرار بنفس العرض */
+  }
+  
+  .modalL-btn:hover {
+    transform: translateY(-2px); /* تحريك الزر لأعلى قليلاً */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التمرير */
+  }
+  
+  #modall-title {
+    font-size: 1.8rem; /* تكبير العنوان */
+    margin-bottom: 20px; /* المسافة بين العنوان والأزرار */
+    font-weight: 600;
+    color: #444;
+  }
+  
+  .modalL-btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* تقليل المسافة بين الأزرار */
+    width: 100%;
+    align-items: center;
+  }
+  
+  .modalL-content {
+    background-color: #f9f9f9;
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    width: 85%;
+    max-width: 500px;
+    border-radius: 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .closeL {
+    color: #bbb;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+  }
+  
+  .closeL:hover,
+  .closeL:focus {
+    color: black;
+    text-decoration: none;
+  }
+  
+  .tab-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .tab-button {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #6c4f80;
+    transition: color 0.3s ease;
+  }
+  
+  .tab-button.active {
+    color: #9a84ad;
+    border-bottom: 2px solid #9a84ad;
+  }
+  
+  .tab-button:hover {
+    color: #9a84ad;
+  }
+  
+  .tab-content {
+    width: 100%;
+  } 

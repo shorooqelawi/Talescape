@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recently Added Books</title>
+  <link rel="stylesheet" href="bookL.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+      <div class="logo">
+          <div class="logo"><a href="libraryhome.html"><i class="fas fa-book"></i> Talescape</a></div>
+      </div>
+      <nav>
+        <a href="libraryhome.html">Home</a>
+        <a href="MyLibrary.html">My Library</a>
+        <a href="bookL.html">Recently Added Books</a>
+        <a href="reserved_books.html">Reserved Books</a>
+        <a href="aboutusL.html">About Us</a>
+      </nav>
+      <div class="account" id="account-icon">
+          <i class="fas fa-user"></i>
+      </div>
+    </header>
+
+    <!-- Account List (The list that will appear when clicking the account icon) -->
+    <div id="account-list" class="account-list" style="display:none;">
+      <ul>
+          <li><strong>Email:</strong> <span id="account-email">Not logged in</span></li>
+          <li><a href="#" id="logout-link" class="logout-link" ><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </div>
+
+    <!-- Filter Search -->
+    <div class="filter-icon">
+      <i id="search-icon" class="fas fa-filter" onclick="toggleSearchModal()">Filters</i>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filter-modal" class="filter-modal">
+      <div class="filter-modal-content">
+        <span class="close-btn" onclick="toggleSearchModal()">&times;</span>
+        <h2 id="filter-h2">Filter Books</h2>
+
+        <!-- Category Filter -->
+        <select id="filter-category" onchange="filterBooks()">
+            <option value="">Select Category</option>
+            <option value="History">History</option>
+            <option value="Religion">Religion</option>
+            <option value="Literature">Literature</option>
+            <option value="Technology">Technology</option>
+            <option value="Science">Science</option>
+            <option value="English">English</option>
+        </select>
+        <!-- Search Field -->
+        <input type="text" id="search-input" placeholder="Search book..." onkeyup="filterBooks()">
+        <button onclick="applyFilters()" class="apply-filters-btn">Apply Filters</button>
+      </div>
+    </div>
+
+    <!-- Book List -->
+    <section class="banner">
+      <div class="content-wrapper">
+        <div class="book-list-container">
+          <h1>Recently Added Books</h1>
+          <div class="book-list" id="book-list">
+            <!-- This list will be populated via JavaScript -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      let booksData = []; // All books will be stored here
+
+      // Fetch books from the server
+      function fetchBooks() {
+        const userEmail = localStorage.getItem('userEmail');  
+        if (!userEmail) {
+          alert("Please log in first.");
+          window.location.href = "index.html";  
+          return;
+        }
+
+        fetch('http://localhost:3000/get-all-books')  
+          .then(response => response.json())
+          .then(data => {
+            booksData = data; // Store the data here
+            displayBooks(booksData); // Display all books
+          })
+          .catch(error => {
+            console.error('Error fetching books:', error);
+            alert('An error occurred while fetching books');
+          });
+      }
+
+      // Display books on the page
+      function displayBooks(books) {
+        const bookList = document.getElementById('book-list');
+        bookList.innerHTML = ''; // Reset the book list
+
+        books.forEach(book => {
+          const bookItem = document.createElement('div');
+          bookItem.classList.add('book-item');
+          bookItem.innerHTML = `
+            <img src="${book.image_url || 'http://localhost:3000/books_cover/default.jpg'}" alt="${book.title}">
+            <h3>${book.title}</h3>
+            <p>${book.description}</p>
+            <button class="btn" onclick="addBookToLibrary(${book.bookid})">Add</button>
+          `;
+          bookList.appendChild(bookItem);
+        });
+      }
+
+      // Filter books
+      function filterBooks() {
+        const searchTerm = document.getElementById('search-input').value.toLowerCase(); 
+        const selectedCategory = document.getElementById('filter-category').value;
+
+        const filteredBooks = booksData.filter(book => {
+          const isCategoryMatch = selectedCategory ? book.category === selectedCategory : true;
+          const isSearchMatch = book.title.toLowerCase().includes(searchTerm);
+          return isCategoryMatch && isSearchMatch;
+        });
+
+        displayBooks(filteredBooks); // Display filtered books
+      }
+
+      // Show and hide the modal
+      function toggleSearchModal() {
+        const modal = document.getElementById('filter-modal');
+        modal.classList.toggle('show');
+      }
+
+      // Apply filters
+      function applyFilters() {
+        filterBooks();
+        toggleSearchModal();
+      }
+
+      // Add a book to the library
+      function addBookToLibrary(bookId) {
+        const userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) {
+          alert("Please log in first.");
+          return;
+        }
+
+        // Show modal to enter the price
+        const price = prompt('Please enter the book price.');
+
+        if (price) {
+          fetch('http://localhost:3000/add-book-to-library', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: userEmail, bookId: bookId, price: price })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              alert('The book has been added successfully!');
+              
+            } else {
+              alert('You have already added it before.');
+            }
+          })
+          .catch(error => {
+            console.error('Error adding book to library:', error);
+            alert('An error occurred while adding the book.');
+          });
+        }
+      }
+
+      // Check login status via localStorage
+      const userEmail = localStorage.getItem('userEmail');  
+      let isLoggedIn = false;
+
+      // Function to show or hide the account list
+      function toggleAccountList() {
+        const accountList = document.getElementById('account-list');
+        if (accountList.style.display === 'none') {
+          accountList.style.display = 'block';
+          if (isLoggedIn) {
+            document.getElementById('account-email').textContent = userEmail;
+          } else {
+            document.getElementById('account-email').textContent = 'Not logged in';
+          }
+        } else {
+          accountList.style.display = 'none';
+        }
+      }
+
+      // Function to log out with a confirmation message
+      function logout() {
+        if (confirm("Are you sure you want to log out?")) {
+          localStorage.removeItem('userEmail');
+          window.location.href = "index.html";  
+        }
+      }
+
+      // Add event listener for clicking the account icon
+      document.getElementById('account-icon').addEventListener('click', toggleAccountList);
+
+      // Add event listener for clicking the "Logout" link
+      document.getElementById('logout-link').addEventListener('click', logout);
+
+      // Check if the user is logged in or not
+      if (userEmail) {
+        isLoggedIn = true;
+      } else {
+        isLoggedIn = false;
+      }
+
+      window.onload = fetchBooks; // Fetch books when the page loads
+    </script>
+
+</body>
+</html>
+

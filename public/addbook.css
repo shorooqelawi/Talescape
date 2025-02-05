@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap');
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Global Styles */
+body {
+  font-family: 'Rubik', sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('imge/bookbanner1.jpg');
+  background-size: cover;
+  background-attachment: fixed; /* تأثير Parallax */
+  background-position: center center;
+}
+
+/* Form Container */
+#add-book-form {
+  position: absolute; /* أو fixed إذا كنت تريد تثبيته */
+  background: #fff;
+  padding: 15px; /* تقليل الحشو */
+  border-radius: 8px; /* تقليل الزوايا المستديرة */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 450px; 
+  height: 600px; 
+  flex-direction: column;
+  min-height: 350px; /* تحديد الحد الأدنى للارتفاع لمنع تغييره */
+  box-sizing: border-box; /* التأكد من أن المساحة لا تتأثر بالحواف أو التوسيع */
+}
+
+/* Labels */
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #555;
+  font-size: 1rem;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 6px; /* تقليل الحشو الداخلي */
+  margin-bottom: 1px; /* تقليل المسافة بين الحقول */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  margin-top: 5px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  border-color: #482756;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  height: 60px; /* تقليل الارتفاع الافتراضي */
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 8px; /* تقليل الحشو */
+  background-color: #482756;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 0px;
+}
+
+button:hover {
+  background-color: #9a84ad;
+  transform: translateY(-2px); /* حركة خفيفة للزر عند التمرير */
+}
+
+/* Message Div */
+#message {
+  position: absolute; /* أو fixed إذا كنت تريد تثبيته */
+  font-size: 1rem; /* تكبير حجم النص */
+  color: #4a1663; /* تغيير لون النص */
+  font-weight: 600; /* جعل النص عريضًا */
+  padding: 10px; /* إضافة حشو داخلي */
+  border-radius: 6px; /* تدوير الحواف */
+  background-color: rgba(105, 27, 154, 0.555); /* لون خلفية شفاف */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* إضافة ظل خفيف */
+  text-align: center; /* محاذاة النص في المنتصف */
+  margin-top: 50px; /* مسافة علوية */
+  transition: all 0.3s ease; /* تأثير ناعم للتحولات */
+  margin-left: 810px;
+}
+
+#message.show {
+  transform: translateY(0); /* عرض الرسالة بشكل طبيعي */
+  opacity: 1;
+}
+
+#message.hide {
+  transform: translateY(-20px); /* إخفاء الرسالة بتحريكها لأعلى */
+  opacity: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #add-book-form {
+    width: 90%; /* جعل العرض مرنًا للشاشات الأصغر */
+    padding: 10px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    font-size: 0.75rem;
+  }
+
+  button {
+    font-size: 0.8rem;
+  }
+}
+
+/* Form shadow effect */
+#add-book-form {
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect for the form */
+#add-book-form:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Button effects */
+button {
+  background-color: #482756;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+}
+
+button:hover {
+  background-color: #9a84ad;
+  transform: translateY(-2px);
+}
+
+/* Glowing effect for the input fields when focused */
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  border-color: #482756;
+  box-shadow: 0 0 5px rgba(72, 39, 86, 0.5);
+}
+
+
+/* Responsive Design Updates */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  #add-book-form {
+    width: 95%; /* زيادة العرض لجعل الفورم يظهر بشكل أفضل */
+    padding: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 7px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    font-size: 0.8rem;
+  }
+}
+h2 {
+  position: absolute; /* أو fixed إذا كنت تريد تثبيته */
+  margin-bottom: 20px; /* إضافة مسافة بين العنوان والفورم */
+  margin-right: 900px;
+  font-family: 'Merriweather', serif;
+  font-weight: 900;
+  color: #482756; /* تغيير لون الخط (مثلاً أزرق) */
+  font-size: 50px; /* تغيير حجم الخط */
+  margin-top: -290px;
+  margin-left: 20px;
+}
+#message.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+#message.hide {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+#add-book-buttons {
+  width: 100%;
+  padding: 8px; /* تقليل الحشو */
+  background-color: #482756;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 5px;
+  text-decoration: none; /* إزالة الخط من الرابط */
+  display: block; /* جعل الزر يأخذ المساحة الكاملة */
+}
+#add-book-buttons:hover {
+  background-color: #9a84ad;
+  transform: translateY(-2px); /* حركة خفيفة للزر عند التمرير */
+}
+#add-book-buttons a {
+  text-decoration: none; /* إزالة الخط من الرابط */
+  color: white; /* لون النص */
+  display: block; /* جعل الرابط يأخذ المساحة الكاملة */
+  width: 100%;
+  height: 100%;
+}

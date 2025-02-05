@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Library</title>
+    <link rel="stylesheet" href="SignupL.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <section class="banner" id="banner-section">
+        <header>
+            <div class="logo"><a href="index.html"><i class="fas fa-book"></i> Talescape</a></div>
+            
+            <nav>
+                <a href="index.html" id="nav-home">Home</a>
+                <a href="books.html" id="nav-books"> Books</a>
+                <a href="Library.html" id="nav-library">Libraries</a>
+                <a href="aboutus.html" id="nav-about">About Us</a>
+            </nav>
+        </header>
+
+        <!-- Sign Up Section for Libraries -->
+        <div class="login-container">
+            <div class="login-box">
+                <h2 id="login-title">Register Library</h2>
+                <form id="signup-form">
+                    <!-- Library Name and Email -->
+                    <div class="input-group-row">
+                        <div class="input-group">
+                            <label for="library-name">Library Name</label>
+                            <input type="text" id="library-name" name="libraryName" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="input-group-row">
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" name="confirmPassword" required>
+                        </div>
+                    </div>
+
+                    <!-- Phone Number and City -->
+                    <div class="input-group-row">
+                        <div class="input-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phoneNumber" required pattern="07\d{8}" placeholder="e.g. 07XXXXXXXX">
+                        </div>
+                        <div class="input-group">
+                            <label for="city">City</label>
+                            <select id="city" name="city" required>
+                                <option value="">Select a city</option>
+                                <option value="Amman">Amman</option>
+                                <option value="Irbid">Irbid</option>
+                                <option value="Zarqa">Zarqa</option>
+                                <option value="Aqaba">Aqaba</option>
+                                <option value="Mafraq">Mafraq</option>
+                                <option value="Karak">Karak</option>
+                                <option value="Salt">Salt</option>
+                                <option value="Madaba">Madaba</option>
+                                <option value="Ajloun">Ajloun</option>
+                                <option value="Jerash">Jerash</option>
+                                <option value="Tafilah">Tafilah</option>
+                                <option value="Ma'an">Ma'an</option>
+                                <option value="Balqa">Balqa</option>
+                                <option value="Jadara">Jadara</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Type of Library -->
+                    <div class="input-group-row">
+                        <div class="input-group">
+                            <label for="library-type">Type of Library</label>
+                            <select id="library-type" name="typeOfLibrary" required>
+                                <option value="">Select Library Type</option>
+                                <option value="online">Online Library</option>
+                                <option value="traditional">Traditional Library</option>
+                                <option value="hybrid">Both Online & Traditional</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Library Address -->
+                    <div class="input-group">
+                        <label for="address">Library Address</label>
+                        <input type="text" id="address" name="address" placeholder="e.g., Amman, Queen Rania Street" required>
+                    </div>
+
+                    <!-- Opening and Closing Time -->
+                    <div class="input-group-row">
+                        <div class="input-group">
+                            <label for="opening-time">Opening Time</label>
+                            <input type="time" id="opening-time" name="openingTime" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="closing-time">Closing Time</label>
+                            <input type="time" id="closing-time" name="closingTime" required>
+                        </div>
+                    </div>
+
+                    <!-- Library Description -->
+                    <div class="input-group">
+                        <label for="description">Library Description</label>
+                        <textarea id="description" name="libraryDescription" rows="4" placeholder="Provide a brief description of your library..." required></textarea>
+                    </div>
+
+                    <!-- Library Website -->
+                    <div class="input-group">
+                        <label for="website">Library Website (URL)</label>
+                        <input type="url" id="website" name="libraryWebsite" placeholder="https://www.librarywebsite.com">
+                    </div>
+
+                    <!-- Available Services -->
+                    <div class="input-group">
+                        <label for="services">Available Services</label>
+                        <textarea id="services" name="availableServices" rows="3" placeholder="e.g., Book Lending, E-Books, Research Assistance"></textarea>
+                    </div>
+
+                    <!-- Preferred Language -->
+                    <div class="input-group">
+                        <label for="language">Preferred Language</label>
+                        <select id="language" name="preferredLanguage" required>
+                            <option value="english">English</option>
+                            <option value="arabic">Arabic</option>
+                        </select>
+                    </div>
+
+                    <!-- Agreement Checkbox -->
+                    <div class="input-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            I agree to the <a href="#">terms and conditions</a>.
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="signup-btn">Register Library</button>
+
+                    <!-- Links for existing users -->
+                    <p class="account-exists">Already have an account? <a href="loginL.html">Login</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById('signup-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();  // منع الإرسال الافتراضي للنموذج
+
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;  // تحويل البيانات إلى كائن JSON
+        });
+
+        // إرسال البيانات كـ JSON
+        fetch('http://localhost:3000/signup-library', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)  // إرسال البيانات بتنسيق JSON
+        })
+        .then(response => response.json())  // تحويل الاستجابة إلى JSON
+        .then(data => {
+            if (data.message) {
+                alert(data.message);  // عرض الرسالة التي أرسلها الخادم
+            }
+            if (data.message === 'Library registration completed successfully!') {
+                window.location.href = 'loginL.html';  // إعادة التوجيه بعد النجاح
+            }
+        })
+        .catch(error => {
+            alert('Error: ' + error.message);  // التعامل مع الأخطاء
+        });
+    });
+});
+    </script>
+</body>
+</html>

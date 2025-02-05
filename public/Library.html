@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library List</title>
+    <link rel="stylesheet" href="librarys.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Banner Section -->
+    <section class="banner" id="banner-section">
+        <header>
+            <div class="logo"><a href="index.html"><i class="fas fa-book"></i> Talescape</a></div>
+            <nav>
+                <a href="index.html" id="nav-home">Home</a>
+                <a href="books.html" id="nav-books"> Books</a>
+                <a href="Library.html" id="nav-library">Libraries</a>
+                <a href="aboutus.html" id="nav-about">About Us</a>
+            </nav>
+
+            <div class="header-icons">
+                <a href="search.html" id="search-icon" class="header-icon" title="Search">
+                    <i class="fas fa-search"></i>
+                </a>
+                <a href="#" id="account-icon" title="Account">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </header>
+<!-- Modal for Login and Signup -->
+<div id="login-modal" class="modal">
+    <div class="modalL-content">
+        <span id="close-modal" class="closeL">&times;</span>
+        <h2 id="modall-title">Welcome to Talescape</h2>
+        <div class="tab-container">
+            <button class="tab-button active" onclick="openTab('login')">Login</button>
+            <button class="tab-button" onclick="openTab('signup')">Signup</button>
+        </div>
+        <div id="login" class="tab-content">
+            <div class="modalL-btn-container">
+                <a href="loginR.html" id="reader-login-link">
+                    <button class="modalL-btn">Login as Reader</button>
+                </a>
+                <a href="loginL.html" id="library-login-link">
+                    <button class="modalL-btn">Login as Library</button>
+                </a>
+            </div>
+        </div>
+        <div id="signup" class="tab-content" style="display:none;">
+            <div class="modalL-btn-container">
+                <a href="signupR.html" id="reader-signup-link">
+                    <button class="modalL-btn">Signup as Reader</button>
+                </a>
+                <a href="signupL.html" id="library-signup-link">
+                    <button class="modalL-btn">Signup as Library</button>
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  
+
+        <!-- Account List -->
+        <div id="account-list" class="account-list" style="display:none;">
+            <ul>
+                <li><strong>Email:</strong> <span id="account-email">Not logged in</span></li>
+                <li><a href="#" id="logout-link" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Button to open the filter modal -->
+        <button id="open-filter-modal" class="filter-icon">
+            <i class="fas fa-filter"></i> Filters
+        </button>
+
+        <!-- Filter Modal -->
+        <div id="filter-modal" class="filter-modal">
+            <div class="filter-modal-content">
+                <span id="close-filter-modal" class="close-btn">&times;</span>
+                <select id="filter-category" class="filter-select">
+                    <option value="">Select Library Type</option>
+                    <option value="Traditional">Traditional library</option>
+                    <option value="Online">Online library</option>
+                    <option value="Both">Both Online & Traditional</option>
+                </select>
+
+                <select id="filter-city" class="filter-select">
+                    <option value="">Select a city</option>
+                    <option value="Amman">Amman</option>
+                    <option value="Irbid">Irbid</option>
+                    <option value="Zarqa">Zarqa</option>
+                    <option value="Aqaba">Aqaba</option>
+                    <option value="Mafraq">Mafraq</option>
+                    <option value="Karak">Karak</option>
+                    <option value="Salt">Salt</option>
+                    <option value="Madaba">Madaba</option>
+                    <option value="Ajloun">Ajloun</option>
+                    <option value="Jerash">Jerash</option>
+                    <option value="Tafilah">Tafilah</option>
+                    <option value="Ma'an">Ma'an</option>
+                    <option value="Balqa">Balqa</option>
+                    <option value="Jadara">Jadara</option>
+                </select>
+
+                <input type="text" id="filter-search" class="filter-search" placeholder="Search library name, location" />
+                <button id="apply-filters" class="apply-filters-btn">Apply Filters</button>
+            </div>
+        </div>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <div class="library-list-container">
+                <h1>Library List</h1>
+                <div id="library-list" class="library-list"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let libraries = [];
+
+        // Function to fetch libraries from the server
+        async function fetchLibraries() {
+            try {
+                const response = await fetch('http://localhost:3000/libraries');
+                if (!response.ok) throw new Error('Failed to fetch libraries');
+                libraries = await response.json();  // Save libraries globally
+                displayLibraries(libraries);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('library-list').innerHTML = 'Failed to load libraries. Please try again later.';
+            }
+        }
+
+        // Function to display libraries on the page
+        function displayLibraries(libraries) {
+            const libraryListContainer = document.getElementById('library-list');
+            libraryListContainer.innerHTML = '';
+
+            if (libraries.length === 0) {
+                libraryListContainer.innerHTML = 'No libraries available.';
+            } else {
+                libraries.forEach(library => {
+                    const libraryItem = document.createElement('div');
+                    libraryItem.classList.add('library-item');
+                    libraryItem.innerHTML = `
+                        <h3>${library.library_name}</h3>
+                        <p>${library.city}</p>
+                        <p>${library.library_description}</p>
+                        <button class="view-button" onclick="viewLibraryDetails(${library.id})">View Details</button>
+                    `;
+                    libraryListContainer.appendChild(libraryItem);
+                });
+            }
+        }
+
+        function viewLibraryDetails(libraryId) {
+        // Redirect to the libraryDetails page with the libraryId as a query parameter
+        window.location.href = `libraryDetails.html?libraryId=${libraryId}`;
+    }
+
+        // Function to filter libraries based on selected filters
+        function filterLibraries() {
+            const category = document.getElementById('filter-category').value;
+            const searchQuery = document.getElementById('filter-search').value.toLowerCase();
+            const cityQuery = document.getElementById('filter-city').value.toLowerCase();
+
+            // Filter libraries based on selected criteria
+            const filteredLibraries = libraries.filter(library => {
+                const matchesCategory = category ? library.type_of_library.toLowerCase().includes(category.toLowerCase()) : true;
+                const matchesSearch = library.library_name.toLowerCase().includes(searchQuery) || library.city.toLowerCase().includes(searchQuery);
+                const matchesCity = cityQuery ? library.city.toLowerCase() === cityQuery : true;
+                return matchesCategory && matchesSearch && matchesCity;
+            });
+
+            displayLibraries(filteredLibraries);
+            document.getElementById('filter-modal').style.display = 'none';  // Close filter modal after applying filters
+        }
+
+        // Open and close filter modal
+        document.getElementById('open-filter-modal').addEventListener('click', () => {
+            document.getElementById('filter-modal').style.display = 'flex';
+        });
+
+        document.getElementById('close-filter-modal').addEventListener('click', () => {
+            document.getElementById('filter-modal').style.display = 'none';
+        });
+
+        // Apply filter and update library list
+        document.getElementById('apply-filters').addEventListener('click', filterLibraries);
+
+        // Show login modal when account icon is clicked
+        document.getElementById('account-icon').addEventListener('click', () => {
+            const isLoggedIn = localStorage.getItem('loggedIn');
+            if (isLoggedIn === 'true') {
+                // If logged in, show account info and logout link
+                document.getElementById('account-email').textContent = localStorage.getItem('userEmail');
+                document.getElementById('logout-link').style.display = 'block';
+                document.getElementById('account-list').style.display = 'block';
+            } else {
+                // If not logged in, show login modal
+                document.getElementById('login-modal').style.display = 'block';
+            }
+        });
+
+        // Close login modal when close button is clicked
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('login-modal').style.display = 'none';
+        });
+
+        // Logout logic
+        document.getElementById('logout-link').addEventListener('click', () => {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.setItem('loggedIn', 'false');
+                localStorage.removeItem('userEmail');
+                document.getElementById('account-email').textContent = 'Not logged in';
+                document.getElementById('logout-link').style.display = 'none';
+                document.getElementById('account-list').style.display = 'none';
+                alert("You have been logged out.");
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Fetch libraries when the page loads
+        fetchLibraries();
+        function openTab(tabName) {
+  var i, tabContent, tabButtons;
+  tabContent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabContent.length; i++) {
+      tabContent[i].style.display = "none";
+  }
+  tabButtons = document.getElementsByClassName("tab-button");
+  for (i = 0; i < tabButtons.length; i++) {
+      tabButtons[i].className = tabButtons[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  event.currentTarget.className += " active";
+}
+
+    </script>
+
+</body>
+
+</html>
+
+
+
+
+
+

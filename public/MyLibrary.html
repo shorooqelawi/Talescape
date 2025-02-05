@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Library</title>
+  <link rel="stylesheet" href="MyLibrary.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header (Top bar) -->
+  <header>
+    <div class="logo">
+      <div class="logo"><a href="libraryhome.html"><i class="fas fa-book"></i> Talescape</a></div>
+    </div>
+    <nav>
+      <a href="libraryhome.html">Home</a>
+      <a href="MyLibrary.html">My Library</a>
+      <a href="bookL.html">Recently Added Books</a>
+      <a href="reserved_books.html">Reserved Books</a>
+      <a href="aboutusL.html">About Us</a>
+    </nav>
+    <!-- Account Icon -->
+    <div class="account" id="account-icon">
+      <i class="fas fa-user"></i>
+    </div>
+  </header>
+
+  <!-- Account List (The list that will appear when clicking the account icon) -->
+  <div id="account-list" class="account-list" style="display:none;">
+    <ul>
+      <li><strong>Email:</strong> <span id="account-email">Not logged in</span></li>
+      <li><a href="#" id="logout-link" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- Button to show new books added by other libraries -->
+  <div style="text-align: center; margin-top: 20px;">
+    <button onclick="showBooksFromOtherLibraries()" class="btn">Show Books from Other Libraries</button>
+  </div>
+
+  <!-- Button to add a new book -->
+  <a href="addbook.html" id="add-book-buttons" style="text-align: center;">
+    <button class="btn">Add Book</button>
+  </a>
+
+  <!-- Filter Section - Modal -->
+  <div id="filter-modal" class="filter-modal">
+    <div class="filter-modal-content">
+      <span class="close-btn" onclick="closeFilterModal()">&times;</span>
+      <h2 id="filter-h2">Filter Books</h2>
+      <!-- Category Filter -->
+      <select id="filter-category">
+        <option value="">Select Category</option>
+        <option value="History">History</option>
+        <option value="Religion">Religion</option>
+        <option value="Literature">Literature</option>
+        <option value="Technology">Technology</option>
+        <option value="Science">Science</option>
+        <option value="English">English</option>
+      </select>
+      <input type="text" id="search-query" placeholder="Enter book title or category">
+      <button onclick="applyFilters()" class="btn">Apply Filters</button>
+    </div>
+  </div>
+
+  <!-- Filter Button -->
+  <div class="filter-icon">
+    <i id="search-icon" class="fas fa-filter" onclick="openFilterModal()">Filters</i>
+  </div>
+
+  <!-- Book List -->
+  <div class="content-wrapper">
+    <div class="book-list-container">
+      <h1>The books you have added to your library</h1>
+      <div class="book-list" id="book-list">
+        <!-- Books will be populated via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allBooks = []; // Variable to store all books
+
+    // Function to fetch books with optional filters
+    function fetchBooks(searchQuery = '', category = '') {
+      const userEmail = localStorage.getItem('userEmail');
+      if (!userEmail) {
+        alert("Please log in first.");
+        window.location.href = "index.html";  // Redirect to login page
+        return;
+      }
+
+      let query = `?email=${userEmail}`;
+      if (searchQuery) query += `&search=${searchQuery}`;
+      if (category) query += `&category=${category}`;
+
+      // Fetch books with applied search query and category filter
+      fetch(`http://localhost:3000/my-library${query}`)
+        .then(response => response.json())
+        .then(data => {
+          allBooks = data; // Store all books in the global variable
+          displayBooks(data); // Display books
+        })
+        .catch(error => {
+          console.error('Error fetching books:', error);
+          alert('An error occurred while fetching books.');
+        });
+    }
+
+    // Function to display books on the page
+    function displayBooks(books) {
+      const bookList = document.getElementById('book-list');
+      bookList.innerHTML = ''; // Clear current list
+
+      if (books && books.length > 0) {
+        books.forEach(book => {
+          const bookItem = document.createElement('div');
+          bookItem.classList.add('book-item');
+          bookItem.innerHTML = `
+            <img src="${book.image_url || 'http://localhost:3000/books_cover/default.jpg'}" alt="${book.title}" />
+            <h3>${book.title}</h3>
+            <p>${book.description}</p>
+            <p>Price: ${book.price} JD</p>
+            <div class="book-actions">
+              <button class="delete-btn" onclick="deleteBook(${book.bookid})">Delete</button>
+              <button class="edit-btn" onclick="editBookPrice(${book.bookid}, ${book.price})">Edit Price</button>
+            </div>
+          `;
+          bookList.appendChild(bookItem);
+        });
+      } else {
+        bookList.innerHTML = '<p>No books found matching your search or filter.</p>';
+      }
+    }
+
+    // Function to delete a book
+    function deleteBook(bookId) {
+      console.log("Deleting book with ID:", bookId);  // Check the value of bookId
+      const userEmail = localStorage.getItem('userEmail');
+      if (!userEmail) {
+        alert("Please log in first.");
+        window.location.href = "index.html";  // Redirect to login page
+        return;
+      }
+
+      if (confirm("Are you sure you want to delete this book?")) {
+        fetch(`http://localhost:3000/delete-book`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: userEmail, bookId: Number(bookId) }),  // Convert bookId to a number
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert("Book deleted successfully!");
+            fetchBooks();  // Refresh the book list
+          } else {
+            alert(data.message || "Failed to delete the book.");
+          }
+        })
+        .catch(error => {
+          console.error('Error deleting book:', error);
+          alert('An error occurred while deleting the book.');
+        });
+      }
+    }
+
+    // Function to edit a book's price
+    function editBookPrice(bookId, currentPrice) {
+      console.log("Editing book with ID:", bookId);  // Check the value of bookId
+      const newPrice = prompt("Enter the new price:", currentPrice);
+      if (newPrice !== null && newPrice !== "" && !isNaN(newPrice)) {
+        const userEmail = localStorage.getItem('userEmail');
+        if (!userEmail) {
+          alert("Please log in first.");
+          window.location.href = "index.html";  // Redirect to login page
+          return;
+        }
+
+        fetch(`http://localhost:3000/update-book-price`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: userEmail, bookId: Number(bookId), newPrice: newPrice }),  // Convert bookId to a number
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert("Price updated successfully!");
+            fetchBooks();  // Refresh the book list
+          } else {
+            alert(data.message || "Failed to update the price.");
+          }
+        })
+        .catch(error => {
+          console.error('Error updating price:', error);
+          alert('An error occurred while updating the price.');
+        });
+      }
+    }
+
+    // Function to apply filters (search query and category)
+    function applyFilters() {
+      const searchQuery = document.getElementById('search-query').value.toLowerCase();
+      const category = document.getElementById('filter-category').value;
+
+      const filteredBooks = allBooks.filter(book => {
+        const matchesSearchQuery = book.title.toLowerCase().includes(searchQuery) || book.category.toLowerCase().includes(searchQuery);
+        const matchesCategory = category ? book.category === category : true;
+        return matchesSearchQuery && matchesCategory;
+      });
+
+      displayBooks(filteredBooks);  // Display filtered books
+
+      // Close the filter modal after applying filters
+      closeFilterModal();
+    }
+
+    // Function to open the Filter Modal
+    function openFilterModal() {
+      document.getElementById("filter-modal").style.display = "block";
+    }
+
+    // Function to close the Filter Modal
+    function closeFilterModal() {
+      document.getElementById("filter-modal").style.display = "none";
+    }
+
+    // Fetch books when the page loads
+    fetchBooks();
+
+    // When the button is clicked, redirect to the bookL.html page
+    function showBooksFromOtherLibraries() {
+      window.location.href = "bookL.html";  // Redirect to bookL.html
+    }
+
+    // Check login status via localStorage
+    const userEmail = localStorage.getItem('userEmail');  // Get email from localStorage
+    let isLoggedIn = false;
+
+    // Function to show or hide the account list
+    function toggleAccountList() {
+      const accountList = document.getElementById('account-list');
+      if (accountList.style.display === 'none') {
+        accountList.style.display = 'block';
+        if (isLoggedIn) {
+          document.getElementById('account-email').textContent = userEmail;
+        } else {
+          document.getElementById('account-email').textContent = 'Not logged in';
+        }
+      } else {
+        accountList.style.display = 'none';
+      }
+    }
+
+    // Function to log out with a confirmation message
+    function logout() {
+      if (confirm("Are you sure you want to log out?")) {
+        // Clear email from localStorage
+        localStorage.removeItem('userEmail');
+        window.location.href = "index.html";  // Redirect to index.html after logout
+      }
+    }
+
+    // Add event listener for clicking the account icon
+    document.getElementById('account-icon').addEventListener('click', toggleAccountList);
+
+    // Add event listener for clicking the "Logout" link
+    document.getElementById('logout-link').addEventListener('click', logout);
+
+    // Check if the user is logged in or not
+    if (userEmail) {
+      isLoggedIn = true;
+    } else {
+      isLoggedIn = false;
+    }
+  </script>
+</body>
+</html>

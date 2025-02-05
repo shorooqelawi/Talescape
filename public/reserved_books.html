@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserved Books</title>
+    <link rel="stylesheet" href="reserved_books.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header (Top bar) -->
+    <header>
+        <div class="logo">
+            <div class="logo"><a href="libraryhome.html"><i class="fas fa-book"></i> Talescape</a></div>
+        </div>
+        <nav>
+            <a href="libraryhome.html">Home</a>
+            <a href="MyLibrary.html">My Library</a>
+            <a href="bookL.html">Recently Added Books</a>
+            <a href="reserved_books.html">Reserved Books</a>
+            <a href="aboutusL.html">About Us</a>
+        </nav>
+        <!-- Account Icon -->
+        <div class="account" id="account-icon">
+            <i class="fas fa-user"></i>
+        </div>
+    </header>
+    
+    <!-- Account List (القائمة التي ستظهر عند الضغط على أيقونة الحساب) -->
+    <div id="account-list" class="account-list" style="display:none;">
+        <ul>
+            <li><strong>Email:</strong> <span id="account-email">Not logged in</span></li>
+            <li><a href="#" id="logout-link" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <section class="content-section">
+        <div class="reserved-books">
+            <h1>Reserved Books</h1>
+            <div id="reserved-books-list">
+                <!-- سيتم ملء هذا القسم بالكتب المحجوزة عبر JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // جلب البريد الإلكتروني للمكتبة من localStorage
+        const libraryEmail = localStorage.getItem('userEmail');
+
+        // جلب الكتب المحجوزة من الخادم
+        async function fetchReservedBooks() {
+            try {
+                const response = await fetch(`http://localhost:3000/reserved-books?email=${libraryEmail}`);
+                
+                // التحقق من حالة الاستجابة
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to fetch reserved books');
+                }
+
+                const data = await response.json();
+
+                const reservedBooksList = document.getElementById('reserved-books-list');
+                reservedBooksList.innerHTML = ''; // مسح المحتوى القديم
+
+                if (data.length === 0) {
+                    reservedBooksList.innerHTML = '<p>No books have been reserved yet.</p>';
+                    return;
+                }
+
+                data.forEach(reservation => {
+                    const bookDiv = document.createElement('div');
+                    bookDiv.className = 'reserved-book reserved'; // إضافة فئة "reserved"
+
+                    bookDiv.innerHTML = `
+                        <h2>${reservation.title}</h2>
+                        <p><strong>Author:</strong> ${reservation.author}</p>
+                        <p><strong>Reserved by:</strong> ${reservation.reader_username} (${reservation.reader_email})</p>
+                        <p><strong>Phone Number:</strong> ${reservation.reader_phone}</p>
+                        <p><strong>Pickup Method:</strong> ${reservation.pickup_method}</p>
+                        <p><strong>Notes:</strong> ${reservation.notes}</p>
+                        <p><strong>Reserved on:</strong> ${new Date(reservation.created_at).toLocaleDateString()}</p>
+                        <button class="done-button" data-reservation-id="${reservation.reservation_id}">Done</button>
+                    `;
+
+                    reservedBooksList.appendChild(bookDiv);
+                });
+            } catch (error) {
+                console.error('Error fetching reserved books:', error);
+                const reservedBooksList = document.getElementById('reserved-books-list');
+                reservedBooksList.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+
+        // تحميل الكتب المحجوزة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', fetchReservedBooks);
+
+        // حدث النقر على زر "Done"
+        document.addEventListener('click', async (event) => {
+            if (event.target.classList.contains('done-button')) {
+                const reservationId = event.target.getAttribute('data-reservation-id');
+                if (confirm('Are you sure you want to mark this reservation as done?')) {
+                    try {
+                        const response = await fetch(`http://localhost:3000/cancel-reservation/${reservationId}`, {
+                            method: 'DELETE'
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Failed to cancel reservation');
+                        }
+
+                        // إعادة تحميل قائمة الكتب المحجوزة بعد الإلغاء
+                        fetchReservedBooks();
+                    } catch (error) {
+                        console.error('Error canceling reservation:', error);
+                        alert('Error canceling reservation');
+                    }
+                }
+            }
+        });
+
+        // تحقق من حالة تسجيل الدخول عبر localStorage
+        const userEmail = localStorage.getItem('userEmail');  // جلب البريد الإلكتروني من localStorage
+        let isLoggedIn = false;
+
+        // دالة لعرض أو إخفاء قائمة الحساب
+        function toggleAccountList() {
+            const accountList = document.getElementById('account-list');
+            if (accountList.style.display === 'none') {
+                accountList.style.display = 'block';
+                if (isLoggedIn) {
+                    document.getElementById('account-email').textContent = userEmail;
+                } else {
+                    document.getElementById('account-email').textContent = 'Not logged in';
+                }
+            } else {
+                accountList.style.display = 'none';
+            }
+        }
+
+        // دالة لتسجيل الخروج مع رسالة تأكيد
+        function logout() {
+            if (confirm("Are you sure you want to log out?")) {
+                // مسح البريد الإلكتروني من localStorage
+                localStorage.removeItem('userEmail');
+                window.location.href = "index.html";  // إعادة التوجيه إلى صفحة index.html بعد تسجيل الخروج
+            }
+        }
+
+        // إضافة حدث للنقر على أيقونة الحساب
+        document.getElementById('account-icon').addEventListener('click', toggleAccountList);
+
+        // إضافة حدث للنقر على رابط "تسجيل الخروج"
+        document.getElementById('logout-link').addEventListener('click', logout);
+
+        // تحقق مما إذا كان المستخدم قد سجل الدخول أم لا
+        if (userEmail) {
+            isLoggedIn = true;
+        } else {
+            isLoggedIn = false;
+        }
+    </script>
+</body>
+</html>

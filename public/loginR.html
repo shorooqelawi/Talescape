@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="loginRstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <section class="banner" id="banner-section">
+        <header>
+            <div class="logo"><a href="index.html"><i class="fas fa-book"></i> Talescape</a></div>
+            <nav>
+                <a href="index.html" id="nav-home">Home</a>
+                <a href="books.html" id="nav-books"> Books</a>
+                <a href="Library.html" id="nav-library">Libraries</a>
+                <a href="aboutus.html" id="nav-about">About Us</a>
+            </nav>
+        </header>
+
+        <!-- Login Section -->
+        <div class="login-container">
+            <div class="login-box">
+                <h2 id="login-title">Login as Reader</h2>
+                <form id="login-form" method="post">
+                    <div class="input-group">
+                        <label for="email" id="email-label">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password" id="password-label">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" id="login-btn">Login</button>
+                    <p class="forgot-password"><a href="forgot-password.html">Forgot your password?</a></p>
+                    <p class="no-account">Don't have an account? <a href="signupR.html">Sign up</a></p>
+                    <p class="no-account">Join our library <a href="signupL.html">Register now!</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script>
+document.getElementById('login-form').addEventListener('submit', async function (e) {
+    e.preventDefault();  // Prevent page reload on form submission
+
+    // Automatically fetch the reader's location
+    let latitude, longitude;
+    try {
+        const position = await new Promise((resolve, reject) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            } else {
+                reject(new Error('Geolocation is not supported by this browser.'));
+            }
+        });
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        localStorage.setItem('locationAllowed', 'true'); // Store location permission status
+        localStorage.setItem('latitude', latitude); // Store latitude
+        localStorage.setItem('longitude', longitude); // Store longitude
+    } catch (error) {
+        console.error('Error getting location:', error);
+        alert('Unable to get your location. Results will be filtered by city.');
+        latitude = 0;
+        longitude = 0;
+    }
+
+    // Collect data from the form
+    const formData = new FormData(this);
+    const data = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        latitude: latitude,
+        longitude: longitude
+    };
+
+    // Send data to the server
+    fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.text())  // Use response.text() instead of response.json()
+    .then(message => {
+        if (message === 'Logged in successfully!') {
+            alert(message);  // Show success message
+
+            // Store login status in localStorage
+            localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('userEmail', data.email);  // Store the email
+
+            // After successful login, redirect the user to the homepage
+            window.location.href = 'index.html';  // Redirect the user to another page after successful login
+        } else {
+            alert('Login error: ' + message);  // Show error message
+        }
+    })
+    .catch(error => {
+        alert('An error occurred during login: ' + error.message);
+    });
+});
+    </script>
+</body>
+</html>

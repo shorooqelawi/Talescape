@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Details</title>
+    <link rel="stylesheet" href="librarydetails.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Banner Section -->
+    <section class="banner" id="banner-section">
+        <header>
+            <div class="logo"><a href="index.html"><i class="fas fa-book"></i> Talescape</a></div>
+            <nav>
+                <a href="index.html" id="nav-home">Home</a>
+                <a href="books.html" id="nav-books"> Books</a>
+                <a href="Library.html" id="nav-library">Libraries</a>
+                <a href="aboutus.html" id="nav-about">About Us</a>
+            </nav>
+
+            <div class="header-icons">
+                <a href="search.html" id="search-icon" class="header-icon" title="Search">
+                    <i class="fas fa-search"></i>
+                </a>
+                <a href="#" id="account-icon" title="Account">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </header>
+    </section>
+<!-- Modal for Login and Signup -->
+<div id="login-modal" class="modal">
+    <div class="modalL-content">
+        <span id="close-modal" class="closeL">&times;</span>
+        <h2 id="modall-title">Welcome to Talescape</h2>
+        <div class="tab-container">
+            <button class="tab-button active" onclick="openTab('login')">Login</button>
+            <button class="tab-button" onclick="openTab('signup')">Signup</button>
+        </div>
+        <div id="login" class="tab-content">
+            <div class="modalL-btn-container">
+                <a href="loginR.html" id="reader-login-link">
+                    <button class="modalL-btn">Login as Reader</button>
+                </a>
+                <a href="loginL.html" id="library-login-link">
+                    <button class="modalL-btn">Login as Library</button>
+                </a>
+            </div>
+        </div>
+        <div id="signup" class="tab-content" style="display:none;">
+            <div class="modalL-btn-container">
+                <a href="signupR.html" id="reader-signup-link">
+                    <button class="modalL-btn">Signup as Reader</button>
+                </a>
+                <a href="signupL.html" id="library-signup-link">
+                    <button class="modalL-btn">Signup as Library</button>
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  
+    <!-- Account List (القائمة التي ستظهر عند الضغط على أيقونة الحساب) -->
+    <div id="account-list" class="account-list" style="display:none;">
+        <ul>
+            <li><strong>Email:</strong> <span id="account-email">Not logged in</span></li>
+            <li><a href="#" id="logout-link" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Library Details Section -->
+    <div class="content-wrapper">
+        <div id="library-details-container">
+            <h2 id="library-name"></h2>
+            <p><strong>City:</strong> <span id="library-city"></span></p>
+            <p><strong>Email:</strong> <span id="library-email"></span></p>
+            <p><strong>Phone:</strong> <span id="library-phone"></span></p>
+            <p><strong>Description:</strong> <span id="library-description"></span></p>
+            <p><strong>Location:</strong> <span id="library-location"></span></p>
+            <a id="map-link" target="_blank" class="maps">View on Map</a> <!-- رابط الخريطة -->
+            <h3>Books Available in this Library</h3>
+            <div id="books-list"></div>
+        </div>
+    </div>
+
+    <!-- Modal for Reservation -->
+    <div id="reservation-modal" class="reservation-modal">
+        <div class="modal-content-res">
+            <span id="close-reservation-modal" class="close-res">&times;</span>
+            <h2>Reservation Details</h2>
+            <form id="reservation-form">
+                <label for="pickup-method">Pickup Method:</label>
+                <select id="pickup-method" required>
+                    <option value="In Store">In Store</option>
+                    <option value="Home Delivery">Home Delivery</option>
+                </select>
+
+                <label for="notes">Notes:</label>
+                <textarea id="notes" rows="4" placeholder="Add any additional notes..."></textarea>
+
+                <button type="submit">Reserve</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Retrieve the library ID from the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const libraryId = urlParams.get('libraryId');
+
+        // Fetch library details and books using the libraryId
+        async function fetchLibraryDetails() {
+            try {
+                // Fetch library details
+                const libraryResponse = await fetch(`http://localhost:3000/libraryDetails/${libraryId}`);
+                const libraryData = await libraryResponse.json();
+
+                // Display library details
+                document.getElementById('library-name').textContent = libraryData.library_name;
+                document.getElementById('library-city').textContent = libraryData.city;
+                document.getElementById('library-email').textContent = libraryData.email;
+                document.getElementById('library-phone').textContent = libraryData.phone_number;
+                document.getElementById('library-description').textContent = libraryData.library_description;
+                document.getElementById('library-location').textContent = `(${libraryData.library_location_latitude}, ${libraryData.library_location_longitude})`;
+
+                // Set the map link
+                const mapLink = document.getElementById('map-link');
+                mapLink.href = `https://www.google.com/maps?q=${libraryData.library_location_latitude},${libraryData.library_location_longitude}`;
+
+                // Fetch books available in the library
+                const booksResponse = await fetch(`http://localhost:3000/booksForLibrary/${libraryData.email}`);
+                const booksData = await booksResponse.json();
+                console.log(booksData);
+
+                // Display books
+                const booksList = document.getElementById('books-list');
+                booksList.innerHTML = ''; // Clear previous content
+                booksData.forEach(book => {
+                    console.log('Book:', book);
+                    const bookItem = document.createElement('div');
+                    bookItem.classList.add('book-item');
+                    bookItem.innerHTML = `
+                        <img src="${book.image_url}" alt="${book.title}" width="100">
+                        <h4>${book.title}</h4>
+                        <p><strong>Author:</strong> ${book.author}</p>
+                        <p><strong>Category:</strong> ${book.category}</p>
+                        <p><strong>Description:</strong> ${book.description}</p>
+                        <p><strong>Price:</strong> ${book.price} JD</p>
+                        <button class="reserve-btn" data-bookid="${book.bookid}" onclick="reserveBook('${libraryData.library_name}', this)">Reserve</button>
+                    `;
+                    booksList.appendChild(bookItem);
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // دالة للتحقق من حالة تسجيل الدخول
+        function checkLoginStatus() {
+            const userEmail = localStorage.getItem('userEmail');
+            return userEmail !== null;
+        }
+
+        async function reserveBook(libraryName, buttonElement) {
+            const bookId = buttonElement.getAttribute('data-bookid');
+            console.log('Book ID:', bookId);
+
+            if (!checkLoginStatus()) {
+                alert("You must be logged in to reserve a book.");
+                window.location.href = 'loginR.html';
+            } else {
+                const readerEmail = localStorage.getItem('userEmail');
+                const reservationCheck = await checkPreviousReservation(readerEmail, bookId);
+
+                if (reservationCheck) {
+                    alert('You have already reserved this book from this library.');
+                } else {
+                    const reservationModal = document.getElementById('reservation-modal');
+                    reservationModal.style.display = 'block';
+
+                    // إزالة الأحداث السابقة من النموذج
+                    const reservationForm = document.getElementById('reservation-form');
+                    const newReservationForm = reservationForm.cloneNode(true); // استنساخ النموذج
+                    reservationForm.parentNode.replaceChild(newReservationForm, reservationForm); // استبدال النموذج
+
+                    // إضافة حدث جديد للنموذج
+                    newReservationForm.addEventListener('submit', async function(event) {
+                        event.preventDefault();
+
+                        const pickupMethod = document.getElementById('pickup-method').value;
+                        const notes = document.getElementById('notes').value;
+
+                        const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+                        console.log('Reservation data:', {
+                            library_name: libraryName,
+                            book_id: bookId,
+                            reader_email: readerEmail,
+                            pickup_method: pickupMethod,
+                            notes: notes,
+                            created_at: createdAt,
+                        });
+
+                        const reservationData = {
+                            library_name: libraryName,
+                            book_id: bookId,
+                            reader_email: readerEmail,
+                            pickup_method: pickupMethod,
+                            notes: notes,
+                            created_at: createdAt,
+                        };
+
+                        try {
+                            const response = await fetch('http://localhost:3000/add_reservation-inlibrary', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(reservationData),
+                            });
+
+                            if (!response.ok) {
+                                const result = await response.json();
+                                alert(result.error);
+                            } else {
+                                const result = await response.json();
+                                alert('The book has been successfully reserved, and the library will contact you soon via your phone number or email.');
+                                reservationModal.style.display = 'none';
+                                newReservationForm.reset(); // إعادة تعيين النموذج
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('Error during reservation: ' + error.message);
+                        }
+                    });
+                }
+            }
+        }
+
+        // دالة للتحقق من الحجز السابق
+        async function checkPreviousReservation(readerEmail, bookId) {
+            try {
+                const response = await fetch('http://localhost:3000/check_reservation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ reader_email: readerEmail, book_id: bookId }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to check previous reservation');
+                }
+
+                const result = await response.json();
+                return result.reservationExists;
+            } catch (error) {
+                console.error('Error:', error);
+                return false;
+            }
+        }
+
+        // إغلاق مودال الحجز عند النقر على زر الإغلاق
+        document.getElementById('close-reservation-modal').addEventListener('click', () => {
+            const reservationModal = document.getElementById('reservation-modal');
+            reservationModal.style.display = 'none';
+        });
+
+        // Fetch the details when the page loads
+        window.onload = fetchLibraryDetails;
+
+        function openTab(tabName) {
+  var i, tabContent, tabButtons;
+  tabContent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabContent.length; i++) {
+      tabContent[i].style.display = "none";
+  }
+  tabButtons = document.getElementsByClassName("tab-button");
+  for (i = 0; i < tabButtons.length; i++) {
+      tabButtons[i].className = tabButtons[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  event.currentTarget.className += " active";
+}
+
+
+        // Determine the elements to interact with
+        const accountIcon = document.getElementById('account-icon');
+        const accountList = document.getElementById('account-list');
+        const modal = document.getElementById('login-modal');
+        const closeModal = document.getElementById('close-modal');
+        const readerLoginLink = document.getElementById('reader-login-link');
+        const libraryLoginLink = document.getElementById('library-login-link');
+        const logoutLink = document.getElementById('logout-link');
+
+        // Check if the user is logged in
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('loggedIn');
+            return isLoggedIn === 'true';
+        }
+
+        // Close the modal when the close button is clicked
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Open the modal when the account icon is clicked
+        accountIcon.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (checkLoginStatus()) {
+                accountList.style.display = accountList.style.display === 'block' ? 'none' : 'block';
+            } else {
+                modal.style.display = 'block';
+            }
+        });
+
+        // Update account content on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('loggedIn');
+            if (isLoggedIn === 'true') {
+                const userEmail = localStorage.getItem('userEmail');
+                document.getElementById('account-email').textContent = userEmail;
+                document.getElementById('account-email').style.display = 'block';
+                document.getElementById('logout-link').style.display = 'block';
+            } else {
+                document.getElementById('account-email').textContent = 'Not logged in';
+                document.getElementById('account-email').style.display = 'none';
+                document.getElementById('logout-link').style.display = 'none';
+            }
+        });
+
+        // Logout functionality with confirmation
+        logoutLink.addEventListener('click', () => {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.setItem('loggedIn', 'false');
+                localStorage.removeItem('userEmail');
+                accountList.style.display = 'none';
+                alert("You have been logged out.");
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+
+</html>

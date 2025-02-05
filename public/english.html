@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English</title>
+  <link rel="stylesheet" href="english.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+<body>
+
+  <!-- Banner Section -->
+  <section class="banner" id="banner-section">
+    <header>
+      <div class="logo"><a href="index.html"><i class="fas fa-book"></i> Talescape</a></div>
+      <nav>
+        <a href="index.html" id="nav-home">Home</a>
+        <a href="books.html" id="nav-books"> Books</a>
+        <a href="Library.html" id="nav-library">Libraries</a>
+        <a href="aboutus.html" id="nav-about">About Us</a>
+      </nav>
+
+      <div class="header-icons">
+        <!-- إضافة أيقونة البحث العائمة هنا -->
+        <a href="#" id="search-icon" class="header-icon" title="Search">
+          <i class="fas fa-search"></i>
+        </a>
+        <a href="#" id="account-icon" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+      </div>
+
+    </header>
+
+<!-- Modal for Login and Signup -->
+<div id="login-modal" class="modal">
+    <div class="modalL-content">
+        <span id="close-modal" class="closeL">&times;</span>
+        <h2 id="modall-title">Welcome to Talescape</h2>
+        <div class="tab-container">
+            <button class="tab-button active" onclick="openTab('login')">Login</button>
+            <button class="tab-button" onclick="openTab('signup')">Signup</button>
+        </div>
+        <div id="login" class="tab-content">
+            <div class="modalL-btn-container">
+                <a href="loginR.html" id="reader-login-link">
+                    <button class="modalL-btn">Login as Reader</button>
+                </a>
+                <a href="loginL.html" id="library-login-link">
+                    <button class="modalL-btn">Login as Library</button>
+                </a>
+            </div>
+        </div>
+        <div id="signup" class="tab-content" style="display:none;">
+            <div class="modalL-btn-container">
+                <a href="signupR.html" id="reader-signup-link">
+                    <button class="modalL-btn">Signup as Reader</button>
+                </a>
+                <a href="signupL.html" id="library-signup-link">
+                    <button class="modalL-btn">Signup as Library</button>
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  
+
+            <!-- Account List (القائمة التي ستظهر عند الضغط على أيقونة الحساب) -->
+    <div id="account-list" class="account-list" style="display:none;">
+        <ul>
+            <li><strong>Email:</strong> <span id="account-email">Not logged in</span></li>
+            <li><a href="#" id="logout-link" class="logout-link" ><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Modal for Search -->
+    <div id="search-modal" class="filter-modal">
+        <div class="filter-modal-content">
+            <span id="close-search-modal" class="close-btn">&times;</span>
+
+            <!-- General Search -->
+            <input type="text" id="search-input"class="filter-search" placeholder="Search books, authors, etc." />
+
+            <!-- Search Button -->
+            <button id="search-button"  class="apply-filters-btn">Search</button>
+        </div>
+    </div>
+
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <div class="book-list-container">
+            <h1>English Books</h1>
+            <div id="book-list" class="book-list"></div>
+        </div>
+    </div>
+  </section>
+
+  <script>
+    // دالة لجلب الكتب من الخادم
+    async function fetchBooks() {
+        try {
+            const response = await fetch('http://localhost:3000/books-english');
+            if (!response.ok) {
+                throw new Error('Failed to fetch books.');
+            }
+            const books = await response.json();
+            displayBooks(books);
+        } catch (error) {
+            console.error('error', error);
+            document.getElementById('book-list').innerHTML = 'Failed to load books. Please try again later.';
+        }
+    }
+
+    // Display books on the page
+    function displayBooks(books) {
+      const bookListContainer = document.getElementById('book-list');
+      bookListContainer.innerHTML = ''; // Clear previous content
+
+      if (books.length === 0) {
+        bookListContainer.innerHTML = 'No books available.';
+      } else {
+        books.forEach(book => {
+          const bookItem = document.createElement('div');
+          bookItem.classList.add('book-item');
+          
+          bookItem.innerHTML = `
+            <img src="${book.image_url || 'http://localhost:3000/books_cover/default.jpg'}" alt="${book.title}">
+            <h3>${book.title}</h3>
+            <p>${book.author}</p>
+            <button class="view-button" onclick="viewBookDetails(${book.bookid})">View Details</button>
+          `;
+
+          bookListContainer.appendChild(bookItem);
+        });
+      }
+    }
+
+
+    // دالة للبحث
+    function searchBooks() {
+        const searchQuery = document.getElementById('search-input').value.toLowerCase();
+
+        fetch('http://localhost:3000/books-english')
+            .then(response => response.json())
+            .then(books => {
+                const filteredBooks = books.filter(book => {
+                    return book.title.toLowerCase().includes(searchQuery) ||
+                           book.author.toLowerCase().includes(searchQuery) ||
+                           book.category.toLowerCase().includes(searchQuery);
+                });
+
+                displayBooks(filteredBooks);
+            })
+            .catch(error => {
+                console.error('error', error);
+            });
+    }
+
+    // فتح نافذة البحث عند النقر على الأيقونة
+    document.getElementById('search-icon').addEventListener('click', () => {
+        document.getElementById('search-modal').style.display = 'flex';
+    });
+
+    // إغلاق نافذة البحث عند النقر على زر الإغلاق
+    document.getElementById('close-search-modal').addEventListener('click', () => {
+        document.getElementById('search-modal').style.display = 'none';
+    });
+
+    // تنفيذ البحث عند الضغط على زر البحث
+    document.getElementById('search-button').addEventListener('click', () => {
+        searchBooks();
+        document.getElementById('search-modal').style.display = 'none'; // إغلاق نافذة البحث بعد البحث
+    });
+
+        // View book details when clicked
+        function viewBookDetails(bookId) {
+            window.location.href = `book-detail.html?id=${bookId}`;
+            // Redirect to the book details page with bookId
+    }
+    // جلب الكتب عند تحميل الصفحة
+    window.onload = fetchBooks;
+
+    function openTab(tabName) {
+  var i, tabContent, tabButtons;
+  tabContent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabContent.length; i++) {
+      tabContent[i].style.display = "none";
+  }
+  tabButtons = document.getElementsByClassName("tab-button");
+  for (i = 0; i < tabButtons.length; i++) {
+      tabButtons[i].className = tabButtons[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  event.currentTarget.className += " active";
+}
+
+
+// Determine the elements to interact with
+const accountIcon = document.getElementById('account-icon');
+    const accountList = document.getElementById('account-list');  // The list that contains account info
+    const modal = document.getElementById('login-modal');
+    const closeModal = document.getElementById('close-modal');
+    const readerLoginLink = document.getElementById('reader-login-link');
+    const libraryLoginLink = document.getElementById('library-login-link');
+    const logoutLink = document.getElementById('logout-link');
+
+    // Check if the user is logged in
+    function checkLoginStatus() {
+        const isLoggedIn = localStorage.getItem('loggedIn');
+        return isLoggedIn === 'true';
+    }
+
+    // Close the modal when the close button is clicked
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Open the modal when the account icon is clicked
+    accountIcon.addEventListener('click', (event) => {
+        event.preventDefault();  // Prevent the default behavior
+        if (checkLoginStatus()) {
+            // If logged in, show account list
+            accountList.style.display = accountList.style.display === 'block' ? 'none' : 'block';
+        } else {
+            // If not logged in, show the login modal
+            modal.style.display = 'block';
+        }
+    });
+
+    // Update account content on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const isLoggedIn = localStorage.getItem('loggedIn');
+        if (isLoggedIn === 'true') {
+            const userEmail = localStorage.getItem('userEmail');
+            document.getElementById('account-email').textContent = userEmail;  // Update email text
+            document.getElementById('account-email').style.display = 'block';
+            document.getElementById('logout-link').style.display = 'block';
+        } else {
+            document.getElementById('account-email').textContent = 'Not logged in';
+            document.getElementById('account-email').style.display = 'none';
+            document.getElementById('logout-link').style.display = 'none';
+        }
+    });
+
+    // Logout functionality with confirmation
+    logoutLink.addEventListener('click', () => {
+        if (confirm('Are you sure you want to log out?')) {
+            localStorage.setItem('loggedIn', 'false');
+            localStorage.removeItem('userEmail');
+            accountList.style.display = 'none';
+            alert("You have been logged out.");
+            window.location.href = 'index.html';
+        }
+    });
+  </script>
+
+</body>
+</html>
