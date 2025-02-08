@@ -35,11 +35,6 @@ The admin panel provides complete management for:
 - **Library management** (add, delete, or modify libraries).
 - **Reserved books and user activity**.
 
-## Screenshots:
-
-Here are some screenshots of the platform:
-
-
 ## Getting Started:
 
 To get started, follow these steps:
