@@ -12,8 +12,8 @@ with open('README.md', 'a') as readme_file:
     for filename in os.listdir(folder_path):
         # تحقق إذا كان الملف صورة بناءً على الامتداد
         if filename.endswith(('.jpg', '.jpeg', '.png', '.gif')):
-            # أنشئ وسم HTML لكل صورة
-            img_tag = f'  <img src="{folder_path}/{filename}" alt="{filename}" width="300">\n'
+            # أنشئ وسم HTML لكل صورة مع المسار الصحيح
+            img_tag = f'  <img src="Screenshots/{filename}" alt="{filename}" width="300">\n'
             readme_file.write(img_tag)
 
     # أغلق الوسم <div>
