@@ -55,6 +55,7 @@ To get started, follow these steps:
    ```bash
    git clone https://github.com/talescape/talescape.git
 
+
 Install Docker (if not already installed):
 
     Docker Installation Guide
