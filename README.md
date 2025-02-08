@@ -39,12 +39,6 @@ The admin panel provides complete management for:
 
 Here are some screenshots of the platform:
 
-<div>
-  <img src="Screenshots/home_page_screenshot.jpg" alt="Home Page" width="300">
-  <img src="Screenshots/library_page_screenshot.jpg" alt="Library Page" width="300">
-  <img src="Screenshots/admin_dashboard_screenshot.jpg" alt="Admin Dashboard" width="300">
-  <img src="Screenshots/google_maps_screenshot.jpg" alt="Google Maps" width="300">
-</div>
 
 ## Getting Started:
 
