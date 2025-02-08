@@ -55,4 +55,16 @@ To get started, follow these steps:
    ```bash
    git clone https://github.com/talescape/talescape.git
 
+Install Docker (if not already installed):
+
+    Docker Installation Guide
+
+Build and run the app using Docker:
+
+docker-compose up --build
+
+Access the app in your browser at http://localhost:3000.
+
+For phpMyAdmin, go to http://localhost:8080 to manage the database
+
 
